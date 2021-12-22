@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Metric" ALTER COLUMN "variables" SET DATA TYPE TEXT,
+ALTER COLUMN "http" SET DATA TYPE TEXT;

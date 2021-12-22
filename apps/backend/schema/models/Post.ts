@@ -1,0 +1,35 @@
+import { objectType, extendType } from "nexus"
+import { Post as PostType } from 'nexus-prisma'
+
+
+export const Post = objectType({
+    name: PostType.$name,
+    description: PostType.$description,
+    definition(t) {
+        t.field(PostType.id)
+        t.field(PostType.title)
+        t.field(PostType.user)
+        t.field(PostType.pictureUrl)
+        t.field(PostType.content)
+        t.field(PostType.type)
+        t.field(PostType.updatedAt)
+        t.field(PostType.createdAt)
+
+        t.field(PostType.school)
+    }
+})
+
+
+export const PostQuery = extendType({
+    type: 'Query',
+    definition(t) {
+        t.nonNull.list.field('posts', {
+            type: Post,
+            resolve: (_, args, ctx) => {
+                return ctx.prisma.post.findMany()
+            }
+        })
+    },
+})
+
+

@@ -1,0 +1,949 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nexusPrisma {
+  provider = "nexus-prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FileType {
+  PDF
+  EXCEL
+  WORD
+  VIDEO
+  AUDIO
+  IMAGE
+}
+
+enum Roles {
+  ADMIN
+  STUDENT
+  GENERAL
+  TEACHER
+  PARENT
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String
+  username String
+  phone    String
+  password String
+  address  String
+  nisn     Int?
+  roles    Roles
+  balance  Float   @default(0)
+  isAdmin  Boolean @default(false)
+
+  isBimbel       Boolean @default(false)
+  isBimbelActive Boolean @default(false)
+
+  identityNumber String[]
+
+  schoolId Int?
+  school   School? @relation(fields: [schoolId], references: [id], name: "school")
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  classtypeId Int?
+  classtype   Classtype? @relation(fields: [classtypeId], references: [id], name: "classtype")
+
+  provinceId Int
+  province   Province @relation(fields: [provinceId], references: [id])
+
+  cityId Int
+  city   City @relation(fields: [cityId], references: [id])
+
+  districtId Int
+  district   District @relation(fields: [districtId], references: [id])
+
+  classrooms           Classroom[]
+  metricts             Metric[]
+  courses              Course[]
+  access               UserAccess[]
+  mytransactions       Transaction[]         @relation("user")
+  receivetransactions  Transaction[]         @relation("receive")
+  mychats              Chat[]
+  rooms                Room[]
+  notifications        Notification[]
+  posts                Post[]
+  schools              School[]
+  withdraws            Withdraw[]
+  quizez               Quiz[]
+  quizmatches          Quizmatch[]
+  quizplayers          Quizplayer[]
+  consultations        Consultation[]
+  consultancies        Consultation[]        @relation("consultancies")
+  absents              Absent[]              @relation("absenttargets")
+  myabsents            Absent[]              @relation("myabsents")
+  agendas              Agenda[]
+  attendance           Attendance[]
+  questions            Question[]
+  packagequestions     Packagequestion[]
+  examplays            Examplay[]
+  examSupervisors      Exam[]
+  meetings             Meeting[]
+  reports              Report[]
+  reportReceivers      Report[]              @relation("reportReceivers")
+  assigmentSubmissions AssigmentSubmission[]
+  fileDocuments        FileDocument[]
+  mytutorings          Tutoring[]            @relation("mytutorings")
+  tutoringTeachers     Tutoring[]            @relation("tutoringTeachers")
+  schoolmanaging       School[]              @relation("schoolmanager")
+}
+
+enum AccessType {
+  GOLD
+  SILVER
+  BRONZE
+
+  COUNSELOR
+  PLUS
+  HOMEROOM
+  SCHOOLADMINISTRATOR
+  HEADMASTER
+}
+
+model UserAccess {
+  id        Int        @id @default(autoincrement())
+  userId    Int        @unique
+  user      User       @relation(fields: [userId], references: [id])
+  type      AccessType
+  expiredAt DateTime
+  createdAt DateTime   @default(now())
+}
+
+model Classroom {
+  id         Int         @id @default(autoincrement())
+  name       String
+  userId     Int
+  updatedAt  DateTime    @updatedAt
+  createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [userId], references: [id])
+  exams      Exam[]
+  meetings   Meeting[]
+  assigments Assigment[]
+}
+
+model Metric {
+  id            Int      @id @default(autoincrement())
+  operationName String
+  query         String
+  variables     String
+  isError       Boolean  @default(false)
+  errorMessage  String?
+  elapsed       BigInt
+  userId        Int?
+  user          User?    @relation(fields: [userId], references: [id])
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+model Course {
+  id          Int          @id @default(autoincrement())
+  name        String
+  views       Int
+  access      AccessType[]
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id])
+  description String?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  subjects     Subject[]
+  classtypes   Classtype[]
+  coursevideos CourseVideo[]
+}
+
+model CourseVideo {
+  id       Int    @id @default(autoincrement())
+  name     String
+  views    Int
+  courseId Int
+
+  files     String[]
+  filesType FileType[]
+
+  course Course @relation(fields: [courseId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+enum SubjectType {
+  GENERAL
+  VOCATIONAL
+  LOCALCONTENT
+  SPECIALDEVELOPMENT
+}
+
+model Subject {
+  id           Int         @id @default(autoincrement())
+  name         String
+  abbreviation String
+  description  String?
+  type         SubjectType
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  courses          Course[]
+  quizez           Quiz[]
+  questions        Question[]
+  exams            Exam[]
+  packagequestions Packagequestion[]
+  assigments       Assigment[]
+}
+
+model Classtype {
+  id    Int @id @default(autoincrement())
+  level Int
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  courses          Course[]
+  quizez           Quiz[]
+  questions        Question[]
+  exams            Exam[]
+  packagequestions Packagequestion[]
+  users            User[]            @relation("classtype")
+}
+
+model Voucher {
+  id Int @id @default(autoincrement())
+
+  name       String
+  code       String
+  percentage Float
+
+
+  expiredAt DateTime
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+
+  transactions Transaction[]
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum PaymentMethod {
+  XENDIT
+  BALANCE
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+
+  uuid String @default(uuid())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], name: "user")
+
+  targetId Int
+  target   User @relation(fields: [targetId], references: [id], name: "receive")
+
+  voucherId Int
+  voucher   Voucher @relation(fields: [voucherId], references: [id])
+
+  paid          Boolean           @default(false)
+  paymentUrl    String?
+  paymentMethod PaymentMethod
+  status        TransactionStatus
+
+  tax      Float
+  discount Float
+  amount   Float
+
+  purchaseId   Int?
+  purchaseType String?
+
+  description String
+
+  content      String?
+  extraContent String?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Withdraw {
+  id Int @id @default(autoincrement())
+
+  uuid String @default(uuid())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  amount Float
+  tax    Float
+  paid   Boolean
+
+  status TransactionStatus
+
+  content      String?
+  extraContent String?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Room {
+  id          Int         @id @default(autoincrement())
+  name        String
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id])
+  locked      Boolean     @default(false)
+  chats       Chat[]
+  quizmatches Quizmatch[]
+  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime    @default(now())
+  meetings    Meeting?    @relation(fields: [meetingId], references: [id])
+  meetingId   Int?
+  tutoringId  Int?        @unique
+  tutoring    Tutoring?   @relation(fields: [tutoringId], references: [id])
+  reports     Report[]
+
+  consultation Consultation?
+}
+
+model Chat {
+  id        Int      @id @default(autoincrement())
+  fromId    Int
+  from      User     @relation(fields: [fromId], references: [id])
+  content   String
+  type      String   @default("text")
+  roomId    Int
+  room      Room     @relation(fields: [roomId], references: [id])
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+  pictureUrl     String
+  message        String
+  context        String
+  contextContent String
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
+}
+
+enum PostType {
+  NEWS
+  ANNOUNCEMENT
+}
+
+model Province {
+  id        Int      @id @default(autoincrement())
+  name      String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  cities    City[]
+  School    School[]
+  users     User[]
+}
+
+model City {
+  id         Int        @id @default(autoincrement())
+  name       String
+  provinceId Int
+  province   Province   @relation(fields: [provinceId], references: [id])
+  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime   @default(now())
+  districts  District[]
+  schools    School[]
+  users      User[]
+}
+
+model District {
+  id        Int      @id @default(autoincrement())
+  name      String
+  cityId    Int
+  city      City     @relation(fields: [cityId], references: [id])
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  schools   School[]
+  users     User[]
+}
+
+model School {
+  id        Int    @id @default(autoincrement())
+  name      String
+  address   String
+  npsn      String
+  posts     Post[]
+  managerId Int?
+  manager   User?  @relation(fields: [managerId], references: [id], name: "schoolmanager")
+
+  provinceId Int
+  province   Province @relation(fields: [provinceId], references: [id])
+
+  cityId Int
+  city   City @relation(fields: [cityId], references: [id])
+
+  districtId Int
+  district   District @relation(fields: [districtId], references: [id])
+
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  users User[]
+  User  User[] @relation("school")
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  title      String
+  pictureUrl String
+  content    String
+  type       PostType
+
+  schoolId Int?
+  school   School? @relation(fields: [schoolId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+}
+
+enum QuizDifficulty {
+  HARD
+  EASY
+  MEDIUM
+}
+
+enum Visibility {
+  SELECT
+  PRIVATE
+  PUBLIC
+}
+
+model Quiz {
+  id Int @id @default(autoincrement())
+
+  name   String
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+
+  subjectId Int
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  classtypeId Int
+  classtype   Classtype @relation(fields: [classtypeId], references: [id])
+
+  playedCount Int     @default(0)
+  isRewarded  Boolean @default(false)
+
+  difficulty  QuizDifficulty
+  visibility  Visibility     @default(PUBLIC)
+  coverUrl    String
+  updatedAt   DateTime       @updatedAt
+  createdAt   DateTime       @default(now())
+  quizmatches Quizmatch[]
+  quizplayers Quizplayer[]
+  questions   Question[]
+}
+
+model Quizmatch {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  name String
+
+  quizId Int
+  quiz   Quiz @relation(fields: [quizId], references: [id])
+
+  password String?
+
+  startAt  DateTime?
+  finishAt DateTime?
+
+  roomId Int
+  room   Room @relation(fields: [roomId], references: [id])
+
+  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime     @default(now())
+  quizplayers Quizplayer[]
+}
+
+model Quizplayer {
+
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  quizId Int
+  quiz   Quiz @relation(fields: [quizId], references: [id])
+
+  quizmatchId Int
+  quizmatch   Quizmatch @relation(fields: [quizmatchId], references: [id])
+
+  score      Int
+  streak     Int   @default(1)
+  answersMap Json?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  SETTLED
+}
+
+model Consultation {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  consultantId Int
+  consultant   User @relation(fields: [consultantId], references: [id], name: "consultancies")
+
+  status Status @default(INACTIVE)
+
+  name String
+
+  content String
+
+  roomId Int  @unique
+  room   Room @relation(fields: [roomId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+}
+
+model Absent {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], name: "myabsents")
+
+  targetId  Int
+  target    User     @relation(fields: [targetId], references: [id], name: "absenttargets")
+  content   String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  attendances Attendance[]
+
+  description String
+}
+
+model Agenda {
+  id Int @id @default(autoincrement())
+
+  uuid String @default(uuid())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  attendances Attendance[]
+
+  fromDate DateTime
+  toDate   DateTime
+
+  content   String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  exam Exam[]
+
+  tutoring Tutoring?
+
+
+
+  meetings Meeting[]
+}
+
+enum AgendaAbsentTargetStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Attendance {
+  id Int @id @default(autoincrement())
+
+  agendaId Int
+  agenda   Agenda @relation(fields: [agendaId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  absentId Int?
+  absent   Absent? @relation(fields: [absentId], references: [id])
+
+  status  AgendaAbsentTargetStatus @default(PENDING)
+  forDate DateTime
+
+  isTutoring    Boolean   @default(false)
+  tutoringIndex Int?
+  tutoringPaid  Boolean   @default(false)
+  attendanceAt  DateTime?
+
+  updatedAt  DateTime  @updatedAt
+  createdAt  DateTime  @default(now())
+  tutorings  Tutoring? @relation(fields: [tutoringId], references: [id])
+  tutoringId Int?
+}
+
+model Exam {
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  subjectId Int
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  examplayers Examplay[]
+
+  questions Question[]
+
+  name        String
+  classroomId Int
+  classroom   Classroom @relation(fields: [classroomId], references: [id])
+
+  odd Boolean @default(false)
+
+  hint        String?
+  description String?
+
+  timeLimit String
+
+  yearStart  Int?
+  yearEnd    Int?
+  shuffle    Boolean @default(true)
+  showResult Boolean @default(true)
+
+  examsessions Examsession[]
+
+  supervisors User[]
+
+  agendaId    Int
+  agenda      Agenda     @relation(fields: [agendaId], references: [id])
+  classtype   Classtype? @relation(fields: [classtypeId], references: [id])
+  classtypeId Int?
+}
+
+model Examsession {
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  examplayers Examplay[]
+
+  name   String
+  token  String
+  exam   Exam   @relation(fields: [examId], references: [id])
+  examId Int
+
+  openAt  DateTime
+  closeAt DateTime
+
+
+}
+
+model Examplay {
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  exam          Exam?        @relation(fields: [examId], references: [id])
+  examId        Int?
+  examsession   Examsession? @relation(fields: [examsessionId], references: [id])
+  examsessionId Int?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  score        Int
+  timePassed   Int
+  lastActivity DateTime @default(now())
+
+  startAt  DateTime  @default(now())
+  finishAt DateTime?
+
+  grade  Float   @default(0)
+  graded Boolean @default(false)
+
+  answersMap Json?
+}
+
+enum MeetingContentType {
+  YOUTUBE
+  WHITEBOARD
+  MEDIA
+}
+
+model Meeting {
+  id Int @id @default(autoincrement())
+
+  uuid String @default(uuid())
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  startAt  DateTime  @default(now())
+  finishAt DateTime?
+
+  name        String
+  classroomId Int
+  classroom   Classroom @relation(fields: [classroomId], references: [id])
+
+  documents  String[]
+  filesTypes String[]
+
+  contentType MeetingContentType
+  contentUrl  String?
+  contentText String?
+
+  agendaId Int
+  agenda   Agenda @relation(fields: [agendaId], references: [id])
+
+
+  room Room[]
+
+}
+
+model Report {
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  receiverId Int
+  receiver   User @relation(fields: [receiverId], references: [id], name: "reportReceivers")
+
+  name    String
+  subject String
+  content String
+
+  status Status @default(ACTIVE)
+
+  roomId Int?
+  room   Room? @relation(fields: [roomId], references: [id])
+
+
+}
+
+model Assigment {
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  name String
+
+  subjectId Int
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+
+  classroomId Int
+  classroom   Classroom @relation(fields: [classroomId], references: [id])
+
+
+  yearStart Int
+  yearEnd   Int
+
+  closeAt DateTime
+
+  files     String[]
+  filesType FileType[]
+
+  odd                 Boolean               @default(false)
+  assigmentsubmission AssigmentSubmission[]
+}
+
+model AssigmentSubmission {
+
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  assigmentId Int
+  assigment   Assigment @relation(fields: [assigmentId], references: [id])
+
+  grade  Float   @default(0)
+  graded Boolean @default(false)
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  files     String[]
+  filesType FileType[]
+
+  editedTimes Int      @default(0)
+  turnedAt    DateTime
+  turned      Boolean  @default(false)
+}
+
+model Question {
+  id Int @id @default(autoincrement())
+
+  quizes Quiz[]
+
+  exams Exam[]
+
+  content String
+
+  files     String[]
+  filesType FileType[]
+
+  visibility Visibility @default(PUBLIC)
+
+  classtypeId Int
+  classtype   Classtype @relation(fields: [classtypeId], references: [id])
+
+  subjectId Int
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  answers          String[]
+  answersDocuments String[]
+  answersTypes     String[]
+
+  correctAnswerIndex Int @default(0)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  packagequestions Packagequestion[]
+
+}
+
+model Packagequestion {
+
+  id Int @id @default(autoincrement())
+
+  name String
+
+
+  visibility Visibility @default(PUBLIC)
+
+  classtypeId Int
+  classtype   Classtype @relation(fields: [classtypeId], references: [id])
+
+  subjectId Int
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  coverUrl String
+
+  questions Question[]
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+}
+
+enum Storage {
+  LOCAL
+  CLOUD
+}
+
+model FileDocument {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  referencePath String?
+  fileType      FileType
+  fileUrl       String
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  targetId   Int?
+  targetType String?
+
+  context String?
+
+  originalSize   Int
+  compressedSize Int
+
+  extensions String
+
+  compressMetadata Json?
+
+  fileName String
+
+  storage Storage
+}
+
+model Tutoring {
+
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], name: "mytutorings")
+
+
+  teacherId Int
+  teacher   User @relation(fields: [teacherId], references: [id], name: "tutoringTeachers")
+
+  agendaId Int    @unique
+  agenda   Agenda @relation(fields: [agendaId], references: [id])
+
+  attendances Attendance[]
+
+  status   Status  @default(ACTIVE)
+  approved Boolean @default(false)
+
+  startAt  DateTime
+  finishAt DateTime
+
+  rate           Float
+  room           Room?
+  address        String
+  notes          String
+  rejectedReason String
+  geolocation    Json?
+  roomId         Int
+}
