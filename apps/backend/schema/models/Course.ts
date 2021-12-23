@@ -20,18 +20,3 @@ export const Course = objectType({
         t.field(CourseType.coursevideos)
     }
 })
-
-
-export const CourseQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('courses', {
-            type: Course,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.course.findMany()
-            }
-        })
-    },
-})
-
-

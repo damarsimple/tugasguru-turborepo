@@ -23,16 +23,4 @@ export const Question = objectType({
 })
 
 
-export const QuestionQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('questions', {
-            type: Question,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.question.findMany()
-            }
-        })
-    },
-})
-
 

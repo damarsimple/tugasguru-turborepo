@@ -15,17 +15,3 @@ export const City = objectType({
     }
 })
 
-
-export const CityQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('cities', {
-            type: City,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.city.findMany()
-            }
-        })
-    },
-})
-
-

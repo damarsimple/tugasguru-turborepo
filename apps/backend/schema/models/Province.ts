@@ -13,16 +13,3 @@ export const Province = objectType({
         t.field(ProvinceType.createdAt)
     }
 })
-
-
-export const ProvinceQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('provinces', {
-            type: Province,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.province.findMany()
-            }
-        })
-    },
-})

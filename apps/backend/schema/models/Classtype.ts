@@ -15,16 +15,3 @@ export const Classtype = objectType({
 })
 
 
-export const ClasstypeQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('classtypes', {
-            type: Classtype,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.classtype.findMany()
-            }
-        })
-    },
-})
-
-

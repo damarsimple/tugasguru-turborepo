@@ -25,16 +25,3 @@ export const Examplay = objectType({
 })
 
 
-export const ExamplayQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('examplays', {
-            type: Examplay,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.examplay.findMany()
-            }
-        })
-    },
-})
-
-

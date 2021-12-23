@@ -20,18 +20,3 @@ export const AssigmentSubmission = objectType({
         t.field(AssigmentSubmissionType.createdAt)
     }
 })
-
-
-export const AssigmentSubmissionQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('assigmentsubmissions', {
-            type: AssigmentSubmission,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.assigmentSubmission.findMany()
-            }
-        })
-    },
-})
-
-

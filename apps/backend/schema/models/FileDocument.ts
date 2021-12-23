@@ -25,17 +25,3 @@ export const FileDocument = objectType({
     }
 })
 
-
-export const FileDocumentQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('filedocuments', {
-            type: FileDocument,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.fileDocument.findMany()
-            }
-        })
-    },
-})
-
-

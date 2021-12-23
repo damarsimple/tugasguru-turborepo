@@ -18,18 +18,3 @@ export const Post = objectType({
         t.field(PostType.school)
     }
 })
-
-
-export const PostQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('posts', {
-            type: Post,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.post.findMany()
-            }
-        })
-    },
-})
-
-

@@ -26,16 +26,4 @@ export const Tutoring = objectType({
 })
 
 
-export const TutoringQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('tutorings', {
-            type: Tutoring,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.tutoring.findMany()
-            }
-        })
-    },
-})
-
 

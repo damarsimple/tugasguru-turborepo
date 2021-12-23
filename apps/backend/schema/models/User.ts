@@ -25,16 +25,3 @@ export const User = objectType({
     }
 })
 
-export const UserQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('users', {
-            type: User,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.user.findMany()
-            }
-        })
-    },
-})
-
-

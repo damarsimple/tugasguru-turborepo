@@ -304,14 +304,9 @@ type Province {
 
 type Query {
   absents: [Absent]!
-  agendas: [Agenda]!
-  assigments: [Assigment]!
-  assigmentsubmissions: [AssigmentSubmission]!
   chats: [Chat]!
-  cities: [City]!
   classrooms: [Classroom]!
   classtypes: [Classtype]!
-  consultation: [Consultation]!
   districts: [District]!
   examplays: [Examplay]!
   examssessions: [Examsession]!
@@ -322,18 +317,11 @@ type Query {
   posts: [Post]!
   provinces: [Province]!
   questions: [Question]!
-  quizes: [Quiz]!
-  quizmatches: [Quizmatch]!
   quizplayers: [Quizplayer]!
   reports: [Report]!
   rooms: [Room]!
   schools: [School]!
   subjects: [Subject]!
-  transactions: [Transaction]!
-  tutorings: [Tutoring]!
-  users: [User]!
-  vouchers: [Voucher]!
-  withdraws: [Withdraw]!
 }
 
 type Question {

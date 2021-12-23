@@ -21,14 +21,3 @@ export const School = objectType({
 })
 
 
-export const SchoolQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('schools', {
-            type: School,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.school.findMany()
-            }
-        })
-    },
-})

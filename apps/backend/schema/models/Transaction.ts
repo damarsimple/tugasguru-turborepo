@@ -29,17 +29,3 @@ export const Transaction = objectType({
     }
 })
 
-
-export const TransactionQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('transactions', {
-            type: Transaction,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.transaction.findMany()
-            }
-        })
-    },
-})
-
-

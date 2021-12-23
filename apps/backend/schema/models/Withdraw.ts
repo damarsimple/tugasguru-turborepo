@@ -22,16 +22,3 @@ export const Withdraw = objectType({
 })
 
 
-export const WithdrawQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('withdraws', {
-            type: Withdraw,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.withdraw.findMany()
-            }
-        })
-    },
-})
-
-

@@ -18,16 +18,3 @@ export const Notification = objectType({
 })
 
 
-export const NotificationQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('notifications', {
-            type: Notification,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.notification.findMany()
-            }
-        })
-    },
-})
-
-

@@ -1,5 +1,5 @@
 
-import { objectType, extendType } from "nexus"
+import { objectType } from "nexus"
 import { Agenda as AgendaType } from 'nexus-prisma'
 
 
@@ -20,18 +20,4 @@ export const Agenda = objectType({
         t.field(AgendaType.createdAt)
     }
 })
-
-
-export const AgendaQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('agendas', {
-            type: Agenda,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.agenda.findMany()
-            }
-        })
-    },
-})
-
 

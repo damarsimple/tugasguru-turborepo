@@ -27,16 +27,4 @@ export const Meeting = objectType({
 })
 
 
-export const MeetingQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('meetings', {
-            type: Meeting,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.meeting.findMany()
-            }
-        })
-    },
-})
-
 

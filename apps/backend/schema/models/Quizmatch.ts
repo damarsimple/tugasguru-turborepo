@@ -20,16 +20,3 @@ export const Quizmatch = objectType({
 })
 
 
-export const QuizmatchQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('quizmatches', {
-            type: Quizmatch,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.quizmatch.findMany()
-            }
-        })
-    },
-})
-
-

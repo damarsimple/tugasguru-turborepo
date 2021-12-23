@@ -19,16 +19,3 @@ export const Packagequestion = objectType({
 })
 
 
-export const PackagequestionQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('packagequestions', {
-            type: Packagequestion,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.packagequestion.findMany()
-            }
-        })
-    },
-})
-
-

@@ -15,14 +15,3 @@ export const District = objectType({
 })
 
 
-export const DistrictQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('districts', {
-            type: District,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.province.findMany()
-            }
-        })
-    },
-})

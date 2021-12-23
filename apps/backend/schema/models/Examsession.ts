@@ -18,18 +18,3 @@ export const Examsession = objectType({
         t.field(ExamsessionType.closeAt)
     }
 })
-
-
-export const ExamsessionQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('examssessions', {
-            type: Examsession,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.examsession.findMany()
-            }
-        })
-    },
-})
-
-

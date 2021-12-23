@@ -17,16 +17,3 @@ export const Chat = objectType({
 })
 
 
-export const ChatQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('chats', {
-            type: Chat,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.chat.findMany()
-            }
-        })
-    },
-})
-
-

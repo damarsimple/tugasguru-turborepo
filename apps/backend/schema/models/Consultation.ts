@@ -19,17 +19,3 @@ export const Consultation = objectType({
     }
 })
 
-
-export const ConsultationQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('consultation', {
-            type: Consultation,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.consultation.findMany()
-            }
-        })
-    },
-})
-
-

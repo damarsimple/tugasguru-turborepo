@@ -19,16 +19,3 @@ export const Quizplayer = objectType({
 })
 
 
-export const QuizplayerQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('quizplayers', {
-            type: Quizplayer,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.quizplayer.findMany()
-            }
-        })
-    },
-})
-
-

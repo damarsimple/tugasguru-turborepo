@@ -23,17 +23,3 @@ export const Assigment = objectType({
     }
 })
 
-
-export const AssigmentQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('assigments', {
-            type: Assigment,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.assigment.findMany()
-            }
-        })
-    },
-})
-
-

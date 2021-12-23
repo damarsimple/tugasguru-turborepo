@@ -18,16 +18,3 @@ export const Voucher = objectType({
 })
 
 
-export const VoucherQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('vouchers', {
-            type: Voucher,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.voucher.findMany()
-            }
-        })
-    },
-})
-
-

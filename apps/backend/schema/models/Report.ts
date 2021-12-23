@@ -20,16 +20,4 @@ export const Report = objectType({
 })
 
 
-export const ReportQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('reports', {
-            type: Report,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.report.findMany()
-            }
-        })
-    },
-})
-
 

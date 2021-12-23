@@ -621,14 +621,9 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     absents: Array<NexusGenRootTypes['Absent'] | null>; // [Absent]!
-    agendas: Array<NexusGenRootTypes['Agenda'] | null>; // [Agenda]!
-    assigments: Array<NexusGenRootTypes['Assigment'] | null>; // [Assigment]!
-    assigmentsubmissions: Array<NexusGenRootTypes['AssigmentSubmission'] | null>; // [AssigmentSubmission]!
     chats: Array<NexusGenRootTypes['Chat'] | null>; // [Chat]!
-    cities: Array<NexusGenRootTypes['City'] | null>; // [City]!
     classrooms: Array<NexusGenRootTypes['Classroom'] | null>; // [Classroom]!
     classtypes: Array<NexusGenRootTypes['Classtype'] | null>; // [Classtype]!
-    consultation: Array<NexusGenRootTypes['Consultation'] | null>; // [Consultation]!
     districts: Array<NexusGenRootTypes['District'] | null>; // [District]!
     examplays: Array<NexusGenRootTypes['Examplay'] | null>; // [Examplay]!
     examssessions: Array<NexusGenRootTypes['Examsession'] | null>; // [Examsession]!
@@ -639,18 +634,11 @@ export interface NexusGenFieldTypes {
     posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     provinces: Array<NexusGenRootTypes['Province'] | null>; // [Province]!
     questions: Array<NexusGenRootTypes['Question'] | null>; // [Question]!
-    quizes: Array<NexusGenRootTypes['Quiz'] | null>; // [Quiz]!
-    quizmatches: Array<NexusGenRootTypes['Quizmatch'] | null>; // [Quizmatch]!
     quizplayers: Array<NexusGenRootTypes['Quizplayer'] | null>; // [Quizplayer]!
     reports: Array<NexusGenRootTypes['Report'] | null>; // [Report]!
     rooms: Array<NexusGenRootTypes['Room'] | null>; // [Room]!
     schools: Array<NexusGenRootTypes['School'] | null>; // [School]!
     subjects: Array<NexusGenRootTypes['Subject'] | null>; // [Subject]!
-    transactions: Array<NexusGenRootTypes['Transaction'] | null>; // [Transaction]!
-    tutorings: Array<NexusGenRootTypes['Tutoring'] | null>; // [Tutoring]!
-    users: Array<NexusGenRootTypes['User'] | null>; // [User]!
-    vouchers: Array<NexusGenRootTypes['Voucher'] | null>; // [Voucher]!
-    withdraws: Array<NexusGenRootTypes['Withdraw'] | null>; // [Withdraw]!
   }
   Question: { // field return type
     answers: string[]; // [String!]!
@@ -1043,14 +1031,9 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     absents: 'Absent'
-    agendas: 'Agenda'
-    assigments: 'Assigment'
-    assigmentsubmissions: 'AssigmentSubmission'
     chats: 'Chat'
-    cities: 'City'
     classrooms: 'Classroom'
     classtypes: 'Classtype'
-    consultation: 'Consultation'
     districts: 'District'
     examplays: 'Examplay'
     examssessions: 'Examsession'
@@ -1061,18 +1044,11 @@ export interface NexusGenFieldTypeNames {
     posts: 'Post'
     provinces: 'Province'
     questions: 'Question'
-    quizes: 'Quiz'
-    quizmatches: 'Quizmatch'
     quizplayers: 'Quizplayer'
     reports: 'Report'
     rooms: 'Room'
     schools: 'School'
     subjects: 'Subject'
-    transactions: 'Transaction'
-    tutorings: 'Tutoring'
-    users: 'User'
-    vouchers: 'Voucher'
-    withdraws: 'Withdraw'
   }
   Question: { // field return type name
     answers: 'String'

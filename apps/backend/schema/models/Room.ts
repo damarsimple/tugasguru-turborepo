@@ -14,16 +14,3 @@ export const Room = objectType({
 })
 
 
-export const RoomQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('rooms', {
-            type: Room,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.room.findMany()
-            }
-        })
-    },
-})
-
-

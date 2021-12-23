@@ -15,16 +15,3 @@ export const Subject = objectType({
 })
 
 
-export const SubjectQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('subjects', {
-            type: Subject,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.subject.findMany()
-            }
-        })
-    },
-})
-
-
