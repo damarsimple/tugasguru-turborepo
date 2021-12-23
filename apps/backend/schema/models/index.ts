@@ -58,3 +58,8 @@ export * from "./Tutoring";
 export * from "./Examsession";
 export * from "./Examplay";
 export * from "./Meeting";
+export * from "./Report";
+export * from "./Assigment";
+export * from "./AssigmentSubmission";
+export * from "./FileDocument";
+export * from "./Packagequestion";

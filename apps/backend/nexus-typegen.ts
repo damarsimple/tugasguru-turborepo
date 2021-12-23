@@ -81,6 +81,30 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     uuid: string; // String!
   }
+  Assigment: { // root type
+    closeAt: NexusGenScalars['DateTime']; // DateTime!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    files: string[]; // [String!]!
+    filesType: NexusGenEnums['FileType'][]; // [FileType!]!
+    id: number; // Int!
+    name: string; // String!
+    odd: boolean; // Boolean!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearEnd: number; // Int!
+    yearStart: number; // Int!
+  }
+  AssigmentSubmission: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    editedTimes: number; // Int!
+    files: string[]; // [String!]!
+    filesType: NexusGenEnums['FileType'][]; // [FileType!]!
+    grade: number; // Float!
+    graded: boolean; // Boolean!
+    id: number; // Int!
+    turned: boolean; // Boolean!
+    turnedAt: NexusGenScalars['DateTime']; // DateTime!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Chat: { // root type
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -165,6 +189,22 @@ export interface NexusGenObjects {
     token: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  FileDocument: { // root type
+    compressedSize: number; // Int!
+    context?: string | null; // String
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    extensions: string; // String!
+    fileName: string; // String!
+    fileType: NexusGenEnums['FileType']; // FileType!
+    fileUrl: string; // String!
+    id: number; // Int!
+    originalSize: number; // Int!
+    referencePath?: string | null; // String
+    storage: NexusGenEnums['Storage']; // Storage!
+    targetId?: number | null; // Int
+    targetType?: string | null; // String
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Meeting: { // root type
     contentText?: string | null; // String
     contentType: NexusGenEnums['MeetingContentType']; // MeetingContentType!
@@ -187,6 +227,13 @@ export interface NexusGenObjects {
     message: string; // String!
     pictureUrl: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  Packagequestion: { // root type
+    coverUrl: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    visibility: NexusGenEnums['Visibility']; // Visibility!
   }
   Post: { // root type
     content: string; // String!
@@ -239,6 +286,15 @@ export interface NexusGenObjects {
     id: number; // Int!
     score: number; // Int!
     streak: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  Report: { // root type
+    content: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    name: string; // String!
+    status: NexusGenEnums['Status']; // Status!
+    subject: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Room: { // root type
@@ -357,6 +413,35 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
     uuid: string; // String!
   }
+  Assigment: { // field return type
+    assigmentsubmission: NexusGenRootTypes['AssigmentSubmission'][]; // [AssigmentSubmission!]!
+    classroom: NexusGenRootTypes['Classroom']; // Classroom!
+    closeAt: NexusGenScalars['DateTime']; // DateTime!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    files: string[]; // [String!]!
+    filesType: NexusGenEnums['FileType'][]; // [FileType!]!
+    id: number; // Int!
+    name: string; // String!
+    odd: boolean; // Boolean!
+    subject: NexusGenRootTypes['Subject']; // Subject!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    yearEnd: number; // Int!
+    yearStart: number; // Int!
+  }
+  AssigmentSubmission: { // field return type
+    assigment: NexusGenRootTypes['Assigment']; // Assigment!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    editedTimes: number; // Int!
+    files: string[]; // [String!]!
+    filesType: NexusGenEnums['FileType'][]; // [FileType!]!
+    grade: number; // Float!
+    graded: boolean; // Boolean!
+    id: number; // Int!
+    turned: boolean; // Boolean!
+    turnedAt: NexusGenScalars['DateTime']; // DateTime!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Chat: { // field return type
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -461,6 +546,23 @@ export interface NexusGenFieldTypes {
     token: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  FileDocument: { // field return type
+    compressedSize: number; // Int!
+    context: string | null; // String
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    extensions: string; // String!
+    fileName: string; // String!
+    fileType: NexusGenEnums['FileType']; // FileType!
+    fileUrl: string; // String!
+    id: number; // Int!
+    originalSize: number; // Int!
+    referencePath: string | null; // String
+    storage: NexusGenEnums['Storage']; // Storage!
+    targetId: number | null; // Int
+    targetType: string | null; // String
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Meeting: { // field return type
     classroom: NexusGenRootTypes['Classroom']; // Classroom!
     contentText: string | null; // String
@@ -488,6 +590,17 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     user: NexusGenRootTypes['User']; // User!
   }
+  Packagequestion: { // field return type
+    classtype: NexusGenRootTypes['Classtype']; // Classtype!
+    coverUrl: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    questions: NexusGenRootTypes['Question'][]; // [Question!]!
+    subject: NexusGenRootTypes['Subject']; // Subject!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+    visibility: NexusGenEnums['Visibility']; // Visibility!
+  }
   Post: { // field return type
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -509,6 +622,8 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     absents: Array<NexusGenRootTypes['Absent'] | null>; // [Absent]!
     agendas: Array<NexusGenRootTypes['Agenda'] | null>; // [Agenda]!
+    assigments: Array<NexusGenRootTypes['Assigment'] | null>; // [Assigment]!
+    assigmentsubmissions: Array<NexusGenRootTypes['AssigmentSubmission'] | null>; // [AssigmentSubmission]!
     chats: Array<NexusGenRootTypes['Chat'] | null>; // [Chat]!
     cities: Array<NexusGenRootTypes['City'] | null>; // [City]!
     classrooms: Array<NexusGenRootTypes['Classroom'] | null>; // [Classroom]!
@@ -517,14 +632,17 @@ export interface NexusGenFieldTypes {
     districts: Array<NexusGenRootTypes['District'] | null>; // [District]!
     examplays: Array<NexusGenRootTypes['Examplay'] | null>; // [Examplay]!
     examssessions: Array<NexusGenRootTypes['Examsession'] | null>; // [Examsession]!
+    filedocuments: Array<NexusGenRootTypes['FileDocument'] | null>; // [FileDocument]!
     meetings: Array<NexusGenRootTypes['Meeting'] | null>; // [Meeting]!
     notifications: Array<NexusGenRootTypes['Notification'] | null>; // [Notification]!
+    packagequestions: Array<NexusGenRootTypes['Packagequestion'] | null>; // [Packagequestion]!
     posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     provinces: Array<NexusGenRootTypes['Province'] | null>; // [Province]!
     questions: Array<NexusGenRootTypes['Question'] | null>; // [Question]!
     quizes: Array<NexusGenRootTypes['Quiz'] | null>; // [Quiz]!
     quizmatches: Array<NexusGenRootTypes['Quizmatch'] | null>; // [Quizmatch]!
     quizplayers: Array<NexusGenRootTypes['Quizplayer'] | null>; // [Quizplayer]!
+    reports: Array<NexusGenRootTypes['Report'] | null>; // [Report]!
     rooms: Array<NexusGenRootTypes['Room'] | null>; // [Room]!
     schools: Array<NexusGenRootTypes['School'] | null>; // [School]!
     subjects: Array<NexusGenRootTypes['Subject'] | null>; // [Subject]!
@@ -581,6 +699,18 @@ export interface NexusGenFieldTypes {
     quizmatch: NexusGenRootTypes['Quizmatch']; // Quizmatch!
     score: number; // Int!
     streak: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    user: NexusGenRootTypes['User']; // User!
+  }
+  Report: { // field return type
+    content: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    name: string; // String!
+    receiver: NexusGenRootTypes['User']; // User!
+    room: NexusGenRootTypes['Room'] | null; // Room
+    status: NexusGenEnums['Status']; // Status!
+    subject: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     user: NexusGenRootTypes['User']; // User!
   }
@@ -705,6 +835,35 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
     uuid: 'String'
   }
+  Assigment: { // field return type name
+    assigmentsubmission: 'AssigmentSubmission'
+    classroom: 'Classroom'
+    closeAt: 'DateTime'
+    createdAt: 'DateTime'
+    files: 'String'
+    filesType: 'FileType'
+    id: 'Int'
+    name: 'String'
+    odd: 'Boolean'
+    subject: 'Subject'
+    updatedAt: 'DateTime'
+    yearEnd: 'Int'
+    yearStart: 'Int'
+  }
+  AssigmentSubmission: { // field return type name
+    assigment: 'Assigment'
+    createdAt: 'DateTime'
+    editedTimes: 'Int'
+    files: 'String'
+    filesType: 'FileType'
+    grade: 'Float'
+    graded: 'Boolean'
+    id: 'Int'
+    turned: 'Boolean'
+    turnedAt: 'DateTime'
+    updatedAt: 'DateTime'
+    user: 'User'
+  }
   Chat: { // field return type name
     content: 'String'
     createdAt: 'DateTime'
@@ -809,6 +968,23 @@ export interface NexusGenFieldTypeNames {
     token: 'String'
     updatedAt: 'DateTime'
   }
+  FileDocument: { // field return type name
+    compressedSize: 'Int'
+    context: 'String'
+    createdAt: 'DateTime'
+    extensions: 'String'
+    fileName: 'String'
+    fileType: 'FileType'
+    fileUrl: 'String'
+    id: 'Int'
+    originalSize: 'Int'
+    referencePath: 'String'
+    storage: 'Storage'
+    targetId: 'Int'
+    targetType: 'String'
+    updatedAt: 'DateTime'
+    user: 'User'
+  }
   Meeting: { // field return type name
     classroom: 'Classroom'
     contentText: 'String'
@@ -836,6 +1012,17 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
     user: 'User'
   }
+  Packagequestion: { // field return type name
+    classtype: 'Classtype'
+    coverUrl: 'String'
+    createdAt: 'DateTime'
+    id: 'Int'
+    questions: 'Question'
+    subject: 'Subject'
+    updatedAt: 'DateTime'
+    user: 'User'
+    visibility: 'Visibility'
+  }
   Post: { // field return type name
     content: 'String'
     createdAt: 'DateTime'
@@ -857,6 +1044,8 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     absents: 'Absent'
     agendas: 'Agenda'
+    assigments: 'Assigment'
+    assigmentsubmissions: 'AssigmentSubmission'
     chats: 'Chat'
     cities: 'City'
     classrooms: 'Classroom'
@@ -865,14 +1054,17 @@ export interface NexusGenFieldTypeNames {
     districts: 'District'
     examplays: 'Examplay'
     examssessions: 'Examsession'
+    filedocuments: 'FileDocument'
     meetings: 'Meeting'
     notifications: 'Notification'
+    packagequestions: 'Packagequestion'
     posts: 'Post'
     provinces: 'Province'
     questions: 'Question'
     quizes: 'Quiz'
     quizmatches: 'Quizmatch'
     quizplayers: 'Quizplayer'
+    reports: 'Report'
     rooms: 'Room'
     schools: 'School'
     subjects: 'Subject'
@@ -929,6 +1121,18 @@ export interface NexusGenFieldTypeNames {
     quizmatch: 'Quizmatch'
     score: 'Int'
     streak: 'Int'
+    updatedAt: 'DateTime'
+    user: 'User'
+  }
+  Report: { // field return type name
+    content: 'String'
+    createdAt: 'DateTime'
+    id: 'Int'
+    name: 'String'
+    receiver: 'User'
+    room: 'Room'
+    status: 'Status'
+    subject: 'String'
     updatedAt: 'DateTime'
     user: 'User'
   }

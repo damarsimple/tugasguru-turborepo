@@ -43,6 +43,37 @@ enum AgendaAbsentTargetStatus {
   REJECTED
 }
 
+type Assigment {
+  assigmentsubmission: [AssigmentSubmission!]!
+  classroom: Classroom!
+  closeAt: DateTime!
+  createdAt: DateTime!
+  files: [String!]!
+  filesType: [FileType!]!
+  id: Int!
+  name: String!
+  odd: Boolean!
+  subject: Subject!
+  updatedAt: DateTime!
+  yearEnd: Int!
+  yearStart: Int!
+}
+
+type AssigmentSubmission {
+  assigment: Assigment!
+  createdAt: DateTime!
+  editedTimes: Int!
+  files: [String!]!
+  filesType: [FileType!]!
+  grade: Float!
+  graded: Boolean!
+  id: Int!
+  turned: Boolean!
+  turnedAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+}
+
 type Chat {
   content: String!
   createdAt: DateTime!
@@ -162,6 +193,24 @@ type Examsession {
   updatedAt: DateTime!
 }
 
+type FileDocument {
+  compressedSize: Int!
+  context: String
+  createdAt: DateTime!
+  extensions: String!
+  fileName: String!
+  fileType: FileType!
+  fileUrl: String!
+  id: Int!
+  originalSize: Int!
+  referencePath: String
+  storage: Storage!
+  targetId: Int
+  targetType: String
+  updatedAt: DateTime!
+  user: User!
+}
+
 enum FileType {
   AUDIO
   EXCEL
@@ -211,6 +260,18 @@ type Notification {
   user: User!
 }
 
+type Packagequestion {
+  classtype: Classtype!
+  coverUrl: String!
+  createdAt: DateTime!
+  id: Int!
+  questions: [Question!]!
+  subject: Subject!
+  updatedAt: DateTime!
+  user: User!
+  visibility: Visibility!
+}
+
 enum PaymentMethod {
   BALANCE
   XENDIT
@@ -244,6 +305,8 @@ type Province {
 type Query {
   absents: [Absent]!
   agendas: [Agenda]!
+  assigments: [Assigment]!
+  assigmentsubmissions: [AssigmentSubmission]!
   chats: [Chat]!
   cities: [City]!
   classrooms: [Classroom]!
@@ -252,14 +315,17 @@ type Query {
   districts: [District]!
   examplays: [Examplay]!
   examssessions: [Examsession]!
+  filedocuments: [FileDocument]!
   meetings: [Meeting]!
   notifications: [Notification]!
+  packagequestions: [Packagequestion]!
   posts: [Post]!
   provinces: [Province]!
   questions: [Question]!
   quizes: [Quiz]!
   quizmatches: [Quizmatch]!
   quizplayers: [Quizplayer]!
+  reports: [Report]!
   rooms: [Room]!
   schools: [School]!
   subjects: [Subject]!
@@ -326,6 +392,19 @@ type Quizplayer {
   quizmatch: Quizmatch!
   score: Int!
   streak: Int!
+  updatedAt: DateTime!
+  user: User!
+}
+
+type Report {
+  content: String!
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+  receiver: User!
+  room: Room
+  status: Status!
+  subject: String!
   updatedAt: DateTime!
   user: User!
 }
