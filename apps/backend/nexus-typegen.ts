@@ -48,6 +48,7 @@ export interface NexusGenEnums {
   PaymentMethod: "BALANCE" | "XENDIT"
   PostType: "ANNOUNCEMENT" | "NEWS"
   QuizDifficulty: "EASY" | "HARD" | "MEDIUM"
+  Roles: "ADMIN" | "GENERAL" | "PARENT" | "STUDENT" | "TEACHER"
   Status: "ACTIVE" | "INACTIVE" | "SETTLED"
   Storage: "CLOUD" | "LOCAL"
   TransactionStatus: "FAILED" | "PENDING" | "SUCCESS"
@@ -105,6 +106,12 @@ export interface NexusGenObjects {
     turnedAt: NexusGenScalars['DateTime']; // DateTime!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  AuthPayload: { // root type
+    message?: string | null; // String
+    refreshToken?: string | null; // String
+    status?: boolean | null; // Boolean
+    token?: string | null; // String
+  }
   Chat: { // root type
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -148,12 +155,6 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     views: number; // Int!
   }
-  District: { // root type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: number; // Int!
-    name: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
-  }
   Exam: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description?: string | null; // String
@@ -194,9 +195,9 @@ export interface NexusGenObjects {
     context?: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     extensions: string; // String!
+    fileId: string; // String!
     fileName: string; // String!
     fileType: NexusGenEnums['FileType']; // FileType!
-    fileUrl: string; // String!
     id: number; // Int!
     originalSize: number; // Int!
     referencePath?: string | null; // String
@@ -206,9 +207,9 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Meeting: { // root type
+    contentId?: string | null; // String
     contentText?: string | null; // String
     contentType: NexusGenEnums['MeetingContentType']; // MeetingContentType!
-    contentUrl?: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     documents: string[]; // [String!]!
     filesTypes: string[]; // [String!]!
@@ -219,17 +220,18 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     uuid: string; // String!
   }
+  Mutation: {};
   Notification: { // root type
     context: string; // String!
     contextContent: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     message: string; // String!
-    pictureUrl: string; // String!
+    pictureId: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Packagequestion: { // root type
-    coverUrl: string; // String!
+    coverId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -239,7 +241,7 @@ export interface NexusGenObjects {
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
-    pictureUrl: string; // String!
+    pictureId: string; // String!
     title: string; // String!
     type: NexusGenEnums['PostType']; // PostType!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -264,7 +266,7 @@ export interface NexusGenObjects {
     visibility: NexusGenEnums['Visibility']; // Visibility!
   }
   Quiz: { // root type
-    coverUrl: string; // String!
+    coverId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     difficulty: NexusGenEnums['QuizDifficulty']; // QuizDifficulty!
     id: number; // Int!
@@ -442,6 +444,12 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     user: NexusGenRootTypes['User']; // User!
   }
+  AuthPayload: { // field return type
+    message: string | null; // String
+    refreshToken: string | null; // String
+    status: boolean | null; // Boolean
+    token: string | null; // String
+  }
   Chat: { // field return type
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -453,7 +461,6 @@ export interface NexusGenFieldTypes {
   }
   City: { // field return type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    districts: NexusGenRootTypes['District'][]; // [District!]!
     id: number; // Int!
     name: string; // String!
     province: NexusGenRootTypes['Province']; // Province!
@@ -492,13 +499,6 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     views: number; // Int!
-  }
-  District: { // field return type
-    city: NexusGenRootTypes['City']; // City!
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: number; // Int!
-    name: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Exam: { // field return type
     agenda: NexusGenRootTypes['Agenda']; // Agenda!
@@ -551,9 +551,9 @@ export interface NexusGenFieldTypes {
     context: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     extensions: string; // String!
+    fileId: string; // String!
     fileName: string; // String!
     fileType: NexusGenEnums['FileType']; // FileType!
-    fileUrl: string; // String!
     id: number; // Int!
     originalSize: number; // Int!
     referencePath: string | null; // String
@@ -565,9 +565,9 @@ export interface NexusGenFieldTypes {
   }
   Meeting: { // field return type
     classroom: NexusGenRootTypes['Classroom']; // Classroom!
+    contentId: string | null; // String
     contentText: string | null; // String
     contentType: NexusGenEnums['MeetingContentType']; // MeetingContentType!
-    contentUrl: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     documents: string[]; // [String!]!
     filesTypes: string[]; // [String!]!
@@ -580,19 +580,23 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
     uuid: string; // String!
   }
+  Mutation: { // field return type
+    login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    register: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+  }
   Notification: { // field return type
     context: string; // String!
     contextContent: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     message: string; // String!
-    pictureUrl: string; // String!
+    pictureId: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     user: NexusGenRootTypes['User']; // User!
   }
   Packagequestion: { // field return type
     classtype: NexusGenRootTypes['Classtype']; // Classtype!
-    coverUrl: string; // String!
+    coverId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
     questions: NexusGenRootTypes['Question'][]; // [Question!]!
@@ -605,7 +609,7 @@ export interface NexusGenFieldTypes {
     content: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: number; // Int!
-    pictureUrl: string; // String!
+    pictureId: string; // String!
     school: NexusGenRootTypes['School'] | null; // School
     title: string; // String!
     type: NexusGenEnums['PostType']; // PostType!
@@ -620,25 +624,7 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
-    absents: Array<NexusGenRootTypes['Absent'] | null>; // [Absent]!
-    chats: Array<NexusGenRootTypes['Chat'] | null>; // [Chat]!
-    classrooms: Array<NexusGenRootTypes['Classroom'] | null>; // [Classroom]!
-    classtypes: Array<NexusGenRootTypes['Classtype'] | null>; // [Classtype]!
-    districts: Array<NexusGenRootTypes['District'] | null>; // [District]!
-    examplays: Array<NexusGenRootTypes['Examplay'] | null>; // [Examplay]!
-    examssessions: Array<NexusGenRootTypes['Examsession'] | null>; // [Examsession]!
-    filedocuments: Array<NexusGenRootTypes['FileDocument'] | null>; // [FileDocument]!
-    meetings: Array<NexusGenRootTypes['Meeting'] | null>; // [Meeting]!
-    notifications: Array<NexusGenRootTypes['Notification'] | null>; // [Notification]!
-    packagequestions: Array<NexusGenRootTypes['Packagequestion'] | null>; // [Packagequestion]!
-    posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
-    provinces: Array<NexusGenRootTypes['Province'] | null>; // [Province]!
-    questions: Array<NexusGenRootTypes['Question'] | null>; // [Question]!
-    quizplayers: Array<NexusGenRootTypes['Quizplayer'] | null>; // [Quizplayer]!
-    reports: Array<NexusGenRootTypes['Report'] | null>; // [Report]!
-    rooms: Array<NexusGenRootTypes['Room'] | null>; // [Room]!
-    schools: Array<NexusGenRootTypes['School'] | null>; // [School]!
-    subjects: Array<NexusGenRootTypes['Subject'] | null>; // [Subject]!
+    me: NexusGenRootTypes['User'] | null; // User
   }
   Question: { // field return type
     answers: string[]; // [String!]!
@@ -656,7 +642,7 @@ export interface NexusGenFieldTypes {
     visibility: NexusGenEnums['Visibility']; // Visibility!
   }
   Quiz: { // field return type
-    coverUrl: string; // String!
+    coverId: string; // String!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     difficulty: NexusGenEnums['QuizDifficulty']; // QuizDifficulty!
     id: number; // Int!
@@ -712,7 +698,6 @@ export interface NexusGenFieldTypes {
     address: string; // String!
     city: NexusGenRootTypes['City']; // City!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    district: NexusGenRootTypes['District']; // District!
     id: number; // Int!
     name: string; // String!
     npsn: string; // String!
@@ -766,7 +751,6 @@ export interface NexusGenFieldTypes {
     balance: number; // Float!
     city: NexusGenRootTypes['City']; // City!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    district: NexusGenRootTypes['District']; // District!
     email: string; // String!
     id: number; // Int!
     name: string; // String!
@@ -852,6 +836,12 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
     user: 'User'
   }
+  AuthPayload: { // field return type name
+    message: 'String'
+    refreshToken: 'String'
+    status: 'Boolean'
+    token: 'String'
+  }
   Chat: { // field return type name
     content: 'String'
     createdAt: 'DateTime'
@@ -863,7 +853,6 @@ export interface NexusGenFieldTypeNames {
   }
   City: { // field return type name
     createdAt: 'DateTime'
-    districts: 'District'
     id: 'Int'
     name: 'String'
     province: 'Province'
@@ -902,13 +891,6 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     updatedAt: 'DateTime'
     views: 'Int'
-  }
-  District: { // field return type name
-    city: 'City'
-    createdAt: 'DateTime'
-    id: 'Int'
-    name: 'String'
-    updatedAt: 'DateTime'
   }
   Exam: { // field return type name
     agenda: 'Agenda'
@@ -961,9 +943,9 @@ export interface NexusGenFieldTypeNames {
     context: 'String'
     createdAt: 'DateTime'
     extensions: 'String'
+    fileId: 'String'
     fileName: 'String'
     fileType: 'FileType'
-    fileUrl: 'String'
     id: 'Int'
     originalSize: 'Int'
     referencePath: 'String'
@@ -975,9 +957,9 @@ export interface NexusGenFieldTypeNames {
   }
   Meeting: { // field return type name
     classroom: 'Classroom'
+    contentId: 'String'
     contentText: 'String'
     contentType: 'MeetingContentType'
-    contentUrl: 'String'
     createdAt: 'DateTime'
     documents: 'String'
     filesTypes: 'String'
@@ -990,19 +972,23 @@ export interface NexusGenFieldTypeNames {
     user: 'User'
     uuid: 'String'
   }
+  Mutation: { // field return type name
+    login: 'AuthPayload'
+    register: 'AuthPayload'
+  }
   Notification: { // field return type name
     context: 'String'
     contextContent: 'String'
     createdAt: 'DateTime'
     id: 'Int'
     message: 'String'
-    pictureUrl: 'String'
+    pictureId: 'String'
     updatedAt: 'DateTime'
     user: 'User'
   }
   Packagequestion: { // field return type name
     classtype: 'Classtype'
-    coverUrl: 'String'
+    coverId: 'String'
     createdAt: 'DateTime'
     id: 'Int'
     questions: 'Question'
@@ -1015,7 +1001,7 @@ export interface NexusGenFieldTypeNames {
     content: 'String'
     createdAt: 'DateTime'
     id: 'Int'
-    pictureUrl: 'String'
+    pictureId: 'String'
     school: 'School'
     title: 'String'
     type: 'PostType'
@@ -1030,25 +1016,7 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Query: { // field return type name
-    absents: 'Absent'
-    chats: 'Chat'
-    classrooms: 'Classroom'
-    classtypes: 'Classtype'
-    districts: 'District'
-    examplays: 'Examplay'
-    examssessions: 'Examsession'
-    filedocuments: 'FileDocument'
-    meetings: 'Meeting'
-    notifications: 'Notification'
-    packagequestions: 'Packagequestion'
-    posts: 'Post'
-    provinces: 'Province'
-    questions: 'Question'
-    quizplayers: 'Quizplayer'
-    reports: 'Report'
-    rooms: 'Room'
-    schools: 'School'
-    subjects: 'Subject'
+    me: 'User'
   }
   Question: { // field return type name
     answers: 'String'
@@ -1066,7 +1034,7 @@ export interface NexusGenFieldTypeNames {
     visibility: 'Visibility'
   }
   Quiz: { // field return type name
-    coverUrl: 'String'
+    coverId: 'String'
     createdAt: 'DateTime'
     difficulty: 'QuizDifficulty'
     id: 'Int'
@@ -1122,7 +1090,6 @@ export interface NexusGenFieldTypeNames {
     address: 'String'
     city: 'City'
     createdAt: 'DateTime'
-    district: 'District'
     id: 'Int'
     name: 'String'
     npsn: 'String'
@@ -1176,7 +1143,6 @@ export interface NexusGenFieldTypeNames {
     balance: 'Float'
     city: 'City'
     createdAt: 'DateTime'
-    district: 'District'
     email: 'String'
     id: 'Int'
     name: 'String'
@@ -1211,6 +1177,27 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    login: { // args
+      password: string; // String!
+      username: string; // String!
+    }
+    register: { // args
+      address: string; // String!
+      cityId: number; // Int!
+      classtypeId?: number | null; // Int
+      email: string; // String!
+      identityNumber?: string | null; // String
+      name: string; // String!
+      nisn?: string | null; // String
+      password: string; // String!
+      phone: string; // String!
+      provinceId: number; // Int!
+      roles: NexusGenEnums['Roles']; // Roles!
+      schoolId?: number | null; // Int
+      username: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

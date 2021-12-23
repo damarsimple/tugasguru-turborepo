@@ -9,7 +9,6 @@ export const City = objectType({
         t.field(CityType.id)
         t.field(CityType.name)
         t.field(CityType.province)
-        t.field(CityType.districts)
         t.field(CityType.updatedAt)
         t.field(CityType.createdAt)
     }

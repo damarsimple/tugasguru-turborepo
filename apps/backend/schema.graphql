@@ -74,6 +74,13 @@ type AssigmentSubmission {
   user: User!
 }
 
+type AuthPayload {
+  message: String
+  refreshToken: String
+  status: Boolean
+  token: String
+}
+
 type Chat {
   content: String!
   createdAt: DateTime!
@@ -86,7 +93,6 @@ type Chat {
 
 type City {
   createdAt: DateTime!
-  districts: [District!]!
   id: Int!
   name: String!
   province: Province!
@@ -135,14 +141,6 @@ type CourseVideo {
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
-
-type District {
-  city: City!
-  createdAt: DateTime!
-  id: Int!
-  name: String!
-  updatedAt: DateTime!
-}
 
 type Exam {
   agenda: Agenda!
@@ -198,9 +196,9 @@ type FileDocument {
   context: String
   createdAt: DateTime!
   extensions: String!
+  fileId: String!
   fileName: String!
   fileType: FileType!
-  fileUrl: String!
   id: Int!
   originalSize: Int!
   referencePath: String
@@ -227,9 +225,9 @@ scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publicati
 
 type Meeting {
   classroom: Classroom!
+  contentId: String
   contentText: String
   contentType: MeetingContentType!
-  contentUrl: String
   createdAt: DateTime!
   documents: [String!]!
   filesTypes: [String!]!
@@ -249,20 +247,25 @@ enum MeetingContentType {
   YOUTUBE
 }
 
+type Mutation {
+  login(password: String!, username: String!): AuthPayload
+  register(address: String!, cityId: Int!, classtypeId: Int, email: String!, identityNumber: String, name: String!, nisn: String, password: String!, phone: String!, provinceId: Int!, roles: Roles!, schoolId: Int, username: String!): AuthPayload
+}
+
 type Notification {
   context: String!
   contextContent: String!
   createdAt: DateTime!
   id: Int!
   message: String!
-  pictureUrl: String!
+  pictureId: String!
   updatedAt: DateTime!
   user: User!
 }
 
 type Packagequestion {
   classtype: Classtype!
-  coverUrl: String!
+  coverId: String!
   createdAt: DateTime!
   id: Int!
   questions: [Question!]!
@@ -281,7 +284,7 @@ type Post {
   content: String!
   createdAt: DateTime!
   id: Int!
-  pictureUrl: String!
+  pictureId: String!
   school: School
   title: String!
   type: PostType!
@@ -303,25 +306,7 @@ type Province {
 }
 
 type Query {
-  absents: [Absent]!
-  chats: [Chat]!
-  classrooms: [Classroom]!
-  classtypes: [Classtype]!
-  districts: [District]!
-  examplays: [Examplay]!
-  examssessions: [Examsession]!
-  filedocuments: [FileDocument]!
-  meetings: [Meeting]!
-  notifications: [Notification]!
-  packagequestions: [Packagequestion]!
-  posts: [Post]!
-  provinces: [Province]!
-  questions: [Question]!
-  quizplayers: [Quizplayer]!
-  reports: [Report]!
-  rooms: [Room]!
-  schools: [School]!
-  subjects: [Subject]!
+  me: User
 }
 
 type Question {
@@ -341,7 +326,7 @@ type Question {
 }
 
 type Quiz {
-  coverUrl: String!
+  coverId: String!
   createdAt: DateTime!
   difficulty: QuizDifficulty!
   id: Int!
@@ -397,6 +382,14 @@ type Report {
   user: User!
 }
 
+enum Roles {
+  ADMIN
+  GENERAL
+  PARENT
+  STUDENT
+  TEACHER
+}
+
 type Room {
   createdAt: DateTime!
   id: Int!
@@ -408,7 +401,6 @@ type School {
   address: String!
   city: City!
   createdAt: DateTime!
-  district: District!
   id: Int!
   name: String!
   npsn: String!
@@ -483,7 +475,6 @@ type User {
   balance: Float!
   city: City!
   createdAt: DateTime!
-  district: District!
   email: String!
   id: Int!
   name: String!

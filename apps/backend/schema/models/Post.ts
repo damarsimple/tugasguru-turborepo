@@ -9,7 +9,7 @@ export const Post = objectType({
         t.field(PostType.id)
         t.field(PostType.title)
         t.field(PostType.user)
-        t.field(PostType.pictureUrl)
+        t.field(PostType.pictureId)
         t.field(PostType.content)
         t.field(PostType.type)
         t.field(PostType.updatedAt)

@@ -19,16 +19,3 @@ export const Absent = objectType({
 })
 
 
-export const AbsentQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        t.nonNull.list.field('absents', {
-            type: Absent,
-            resolve: (_, args, ctx) => {
-                return ctx.prisma.absent.findMany()
-            }
-        })
-    },
-})
-
-

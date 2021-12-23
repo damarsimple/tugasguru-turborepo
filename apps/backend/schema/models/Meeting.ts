@@ -18,7 +18,7 @@ export const Meeting = objectType({
         t.field(MeetingType.filesTypes)
         t.field(MeetingType.contentText)
         t.field(MeetingType.contentType)
-        t.field(MeetingType.contentUrl)
+        t.field(MeetingType.contentId)
         // t.field(MeetingType.agenda)
         t.field(MeetingType.room)
         t.field(MeetingType.createdAt)

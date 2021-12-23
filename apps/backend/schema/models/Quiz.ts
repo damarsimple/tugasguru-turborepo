@@ -13,7 +13,7 @@ export const Quiz = objectType({
         t.field(QuizType.playedCount)
         t.field(QuizType.difficulty)
         t.field(QuizType.visibility)
-        t.field(QuizType.coverUrl)
+        t.field(QuizType.coverId)
         t.field(QuizType.questions)
         t.field(QuizType.updatedAt)
         t.field(QuizType.createdAt)

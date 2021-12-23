@@ -11,7 +11,7 @@ export const Packagequestion = objectType({
         t.field(PackagequestionType.subject)
         t.field(PackagequestionType.visibility)
         t.field(PackagequestionType.classtype)
-        t.field(PackagequestionType.coverUrl)
+        t.field(PackagequestionType.coverId)
         t.field(PackagequestionType.questions)
         t.field(PackagequestionType.updatedAt)
         t.field(PackagequestionType.createdAt)

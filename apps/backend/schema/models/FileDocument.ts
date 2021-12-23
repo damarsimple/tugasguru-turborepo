@@ -10,7 +10,7 @@ export const FileDocument = objectType({
         t.field(FileDocumentType.user)
         t.field(FileDocumentType.referencePath)
         t.field(FileDocumentType.fileType)
-        t.field(FileDocumentType.fileUrl)
+        t.field(FileDocumentType.fileId)
         t.field(FileDocumentType.targetId)
         t.field(FileDocumentType.targetType)
         t.field(FileDocumentType.context)

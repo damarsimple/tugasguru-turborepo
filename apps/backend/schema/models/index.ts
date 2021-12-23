@@ -12,9 +12,11 @@ import {
     MeetingContentType as MeetingContentTypeEnum,
     Storage as StorageEnum,
     FileType as FileTypeEnum,
+    Roles as RolesEnum
 } from 'nexus-prisma';
 
 
+export const Roles = enumType(RolesEnum);
 export const AccessType = enumType(AccessTypeEnum);
 export const TransactionStatus = enumType(TransactionStatusEnum);
 export const PaymentMethod = enumType(PaymentMethodEnum);
@@ -32,7 +34,6 @@ export const Json = asNexusMethod(JSONObjectResolver, 'Json');
 
 export * from "./User";
 export * from "./City";
-export * from "./District";
 export * from "./Province";
 export * from "./Classroom";
 export * from "./School";

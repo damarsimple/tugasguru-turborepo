@@ -35,11 +35,11 @@ model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique
   name     String
-  username String
-  phone    String
+  username String  @unique
+  phone    String  @unique
   password String
   address  String
-  nisn     Int?
+  nisn     String? @unique
   roles    Roles
   balance  Float   @default(0)
   isAdmin  Boolean @default(false)
@@ -47,7 +47,13 @@ model User {
   isBimbel       Boolean @default(false)
   isBimbelActive Boolean @default(false)
 
-  identityNumber String[]
+  coverId        String?
+  identityNumber String?
+
+  childrens User[] @relation("childrens")
+
+  parentId Int?
+  parent   User? @relation(fields: [parentId], references: [id], name: "childrens")
 
   schoolId Int?
   school   School? @relation(fields: [schoolId], references: [id], name: "school")
@@ -64,10 +70,6 @@ model User {
   cityId Int
   city   City @relation(fields: [cityId], references: [id])
 
-  districtId Int
-  district   District @relation(fields: [districtId], references: [id])
-
-  classrooms           Classroom[]
   metricts             Metric[]
   courses              Course[]
   access               UserAccess[]
@@ -100,6 +102,8 @@ model User {
   mytutorings          Tutoring[]            @relation("mytutorings")
   tutoringTeachers     Tutoring[]            @relation("tutoringTeachers")
   schoolmanaging       School[]              @relation("schoolmanager")
+  classroomstudents    Classroom[]           @relation("students")
+  classroomteachers    Classroom[]           @relation("teacher")
 }
 
 enum AccessType {
@@ -124,15 +128,24 @@ model UserAccess {
 }
 
 model Classroom {
-  id         Int         @id @default(autoincrement())
-  name       String
-  userId     Int
-  updatedAt  DateTime    @updatedAt
-  createdAt  DateTime    @default(now())
-  user       User        @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  name      String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], name: "teacher")
+
+  schoolId Int?
+  school   School? @relation(fields: [schoolId], references: [id])
+
+  classtypeId Int?
+  classtype   Classtype? @relation(fields: [classtypeId], references: [id])
+
   exams      Exam[]
   meetings   Meeting[]
   assigments Assigment[]
+  students   User[]      @relation("students")
 }
 
 model Metric {
@@ -219,6 +232,7 @@ model Classtype {
   exams            Exam[]
   packagequestions Packagequestion[]
   users            User[]            @relation("classtype")
+  classrooms       Classroom[]
 }
 
 model Voucher {
@@ -339,7 +353,7 @@ model Notification {
   id             Int      @id @default(autoincrement())
   userId         Int
   user           User     @relation(fields: [userId], references: [id])
-  pictureUrl     String
+  pictureId      String
   message        String
   context        String
   contextContent String
@@ -363,26 +377,14 @@ model Province {
 }
 
 model City {
-  id         Int        @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   provinceId Int
-  province   Province   @relation(fields: [provinceId], references: [id])
-  updatedAt  DateTime   @updatedAt
-  createdAt  DateTime   @default(now())
-  districts  District[]
+  province   Province @relation(fields: [provinceId], references: [id])
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
   schools    School[]
   users      User[]
-}
-
-model District {
-  id        Int      @id @default(autoincrement())
-  name      String
-  cityId    Int
-  city      City     @relation(fields: [cityId], references: [id])
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-  schools   School[]
-  users     User[]
 }
 
 model School {
@@ -400,15 +402,14 @@ model School {
   cityId Int
   city   City @relation(fields: [cityId], references: [id])
 
-  districtId Int
-  district   District @relation(fields: [districtId], references: [id])
 
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
-  users User[]
-  User  User[] @relation("school")
+  users     User[]
+  User      User[]      @relation("school")
+  Classroom Classroom[]
 }
 
 model Post {
@@ -418,10 +419,10 @@ model Post {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
-  title      String
-  pictureUrl String
-  content    String
-  type       PostType
+  title     String
+  pictureId String
+  content   String
+  type      PostType
 
   schoolId Int?
   school   School? @relation(fields: [schoolId], references: [id])
@@ -461,7 +462,7 @@ model Quiz {
 
   difficulty  QuizDifficulty
   visibility  Visibility     @default(PUBLIC)
-  coverUrl    String
+  coverId     String
   updatedAt   DateTime       @updatedAt
   createdAt   DateTime       @default(now())
   quizmatches Quizmatch[]
@@ -619,6 +620,14 @@ model Attendance {
   tutoringId Int?
 }
 
+model Examtype {
+  id        Int      @id @default(autoincrement())
+  name      String
+  exams     Exam[]
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
 model Exam {
   id Int @id @default(autoincrement())
 
@@ -627,6 +636,9 @@ model Exam {
 
   subjectId Int
   subject   Subject @relation(fields: [subjectId], references: [id])
+
+  examtypeId Int
+  examtype   Examtype @relation(fields: [examtypeId], references: [id])
 
   examplayers Examplay[]
 
@@ -732,7 +744,7 @@ model Meeting {
   filesTypes String[]
 
   contentType MeetingContentType
-  contentUrl  String?
+  contentId   String?
   contentText String?
 
   agendaId Int
@@ -823,8 +835,7 @@ model Question {
   id Int @id @default(autoincrement())
 
   quizes Quiz[]
-
-  exams Exam[]
+  exams  Exam[]
 
   content String
 
@@ -873,7 +884,7 @@ model Packagequestion {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
-  coverUrl String
+  coverId String
 
   questions Question[]
 
@@ -895,7 +906,7 @@ model FileDocument {
 
   referencePath String?
   fileType      FileType
-  fileUrl       String
+  fileId        String
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())

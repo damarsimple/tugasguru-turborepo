@@ -8,7 +8,7 @@ export const Notification = objectType({
     definition(t) {
         t.field(NotificationType.id)
         t.field(NotificationType.user)
-        t.field(NotificationType.pictureUrl)
+        t.field(NotificationType.pictureId)
         t.field(NotificationType.context)
         t.field(NotificationType.contextContent)
         t.field(NotificationType.message)

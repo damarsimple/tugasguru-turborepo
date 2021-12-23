@@ -12,7 +12,6 @@ export const School = objectType({
         t.field(SchoolType.npsn)
         t.field(SchoolType.city)
         t.field(SchoolType.province)
-        t.field(SchoolType.district)
 
         t.field(SchoolType.updatedAt)
         t.field(SchoolType.createdAt)
