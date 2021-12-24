@@ -66,6 +66,7 @@ export interface NexusGenScalars {
   Upload: any
 }
 
+
 export interface NexusGenObjects {
   Absent: { // root type
     content: string; // String!
