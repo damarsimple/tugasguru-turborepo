@@ -8,8 +8,8 @@ export const schema = makeSchema({
   types: { ...ModelTypes, ...MutationTypes, ...QueryTypes }
   ,
   outputs: {
-    typegen: join(__dirname, '..', 'nexus-typegen.ts'), // 2
-    schema: join(__dirname, '..', 'schema.graphql'), // 3
+    typegen: join(__dirname, '../', 'nexus-typegen.ts'), // 2
+    schema: join(__dirname, '../', 'schema.graphql'), // 3
   },
   contextType: {
     module: join(__dirname, '../api', 'context.ts'),
