@@ -21,6 +21,9 @@ enum FileType {
   VIDEO
   AUDIO
   IMAGE
+  POWERPOINT
+  TEXT
+  OTHER
 }
 
 enum Roles {
@@ -98,7 +101,7 @@ model User {
   reports              Report[]
   reportReceivers      Report[]              @relation("reportReceivers")
   assigmentSubmissions AssigmentSubmission[]
-  fileDocuments        FileDocument[]
+  fileDatas            FileData[]
   mytutorings          Tutoring[]            @relation("mytutorings")
   tutoringTeachers     Tutoring[]            @relation("tutoringTeachers")
   schoolmanaging       School[]              @relation("schoolmanager")
@@ -898,15 +901,14 @@ enum Storage {
   CLOUD
 }
 
-model FileDocument {
+model FileData {
   id Int @id @default(autoincrement())
 
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  userId   Int?
+  user     User?    @relation(fields: [userId], references: [id])
+  fileType FileType
 
   referencePath String?
-  fileType      FileType
-  fileId        String
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
@@ -916,16 +918,18 @@ model FileDocument {
 
   context String?
 
-  originalSize   Int
-  compressedSize Int
+  originalSize   Int @default(0)
+  compressedSize Int @default(0)
 
-  extensions String
+  mime String
 
   compressMetadata Json?
 
   fileName String
 
   storage Storage
+
+  processed Boolean @default(false)
 }
 
 model Tutoring {

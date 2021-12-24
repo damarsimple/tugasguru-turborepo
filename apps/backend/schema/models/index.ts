@@ -1,4 +1,5 @@
-import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars'
+import { DateTimeResolver, JSONObjectResolver, } from 'graphql-scalars'
+import { GraphQLUpload } from 'graphql-upload';
 import { asNexusMethod, enumType } from 'nexus';
 import {
     AccessType as AccessTypeEnum,
@@ -15,7 +16,6 @@ import {
     Roles as RolesEnum
 } from 'nexus-prisma';
 
-
 export const Roles = enumType(RolesEnum);
 export const AccessType = enumType(AccessTypeEnum);
 export const TransactionStatus = enumType(TransactionStatusEnum);
@@ -31,6 +31,8 @@ export const FileType = enumType(FileTypeEnum);
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'DateTime');
 export const Json = asNexusMethod(JSONObjectResolver, 'Json');
+
+export const Upload = GraphQLUpload
 
 export * from "./User";
 export * from "./City";
@@ -62,5 +64,5 @@ export * from "./Meeting";
 export * from "./Report";
 export * from "./Assigment";
 export * from "./AssigmentSubmission";
-export * from "./FileDocument";
+export * from "./FileData";
 export * from "./Packagequestion";

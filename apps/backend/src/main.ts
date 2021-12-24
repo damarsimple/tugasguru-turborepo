@@ -1,10 +1,12 @@
-import { ApolloServer } from "apollo-server";
-import { schema } from "./schema/schema";
-import { context, prisma } from "./api/context";
+import { ApolloServer } from "apollo-server-express";
+import { schema } from "../schema/schema";
+import { context, prisma } from "../api/context";
 import pino from "pino";
-import { logRequestDB } from "./logging";
-import { verifyJWT } from "./api/jwt";
+import { logRequestDB } from "../logging";
+import { verifyJWT } from "../api/jwt";
 import { User } from "@prisma/client";
+import { graphqlUploadExpress } from "graphql-upload";
+import express from "express";
 
 const dest = pino.destination({
   sync: false,
@@ -33,8 +35,10 @@ const server = new ApolloServer({
     }
 
     return {
+      user,
+      isLogged: !!user,
+      isAdmin: user?.isAdmin || false,
       ...context,
-      user
     }
   },
   plugins: [
@@ -95,8 +99,18 @@ async function main() {
   //   }
   // }
 
-  server.listen(4000, () => {
-    console.log("Server started on port " + 4000);
+  await server.start();
+
+  const app = express();
+
+  // This middleware should be added before calling`applyMiddleware`.
+  app.use(graphqlUploadExpress());
+
+  server.applyMiddleware({ app });
+
+
+  app.listen(4000, () => {
+    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
   });
 
 

@@ -6,7 +6,7 @@ export const AbsentQuery = extendType({
     definition(t) {
         t.nullable.field('me', {
             type: User,
-            authorize: (_, __, ctx) => !!ctx.user,
+            authorize: (_, __, ctx) => ctx.isLogged,
             resolve: async (_, __, ctx) => {
                 if (ctx.user?.id) {
                     const user = await ctx.prisma.user.findUnique({

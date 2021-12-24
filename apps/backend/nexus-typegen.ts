@@ -43,7 +43,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   AccessType: "BRONZE" | "COUNSELOR" | "GOLD" | "HEADMASTER" | "HOMEROOM" | "PLUS" | "SCHOOLADMINISTRATOR" | "SILVER"
   AgendaAbsentTargetStatus: "ACCEPTED" | "PENDING" | "REJECTED"
-  FileType: "AUDIO" | "EXCEL" | "IMAGE" | "PDF" | "VIDEO" | "WORD"
+  FileType: "AUDIO" | "EXCEL" | "IMAGE" | "OTHER" | "PDF" | "POWERPOINT" | "TEXT" | "VIDEO" | "WORD"
   MeetingContentType: "MEDIA" | "WHITEBOARD" | "YOUTUBE"
   PaymentMethod: "BALANCE" | "XENDIT"
   PostType: "ANNOUNCEMENT" | "NEWS"
@@ -63,6 +63,7 @@ export interface NexusGenScalars {
   ID: string
   DateTime: any
   JSONObject: any
+  Upload: any
 }
 
 export interface NexusGenObjects {
@@ -190,15 +191,13 @@ export interface NexusGenObjects {
     token: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
-  FileDocument: { // root type
+  FileData: { // root type
     compressedSize: number; // Int!
     context?: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    extensions: string; // String!
-    fileId: string; // String!
     fileName: string; // String!
-    fileType: NexusGenEnums['FileType']; // FileType!
     id: number; // Int!
+    mime: string; // String!
     originalSize: number; // Int!
     referencePath?: string | null; // String
     storage: NexusGenEnums['Storage']; // Storage!
@@ -546,22 +545,20 @@ export interface NexusGenFieldTypes {
     token: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
-  FileDocument: { // field return type
+  FileData: { // field return type
     compressedSize: number; // Int!
     context: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    extensions: string; // String!
-    fileId: string; // String!
     fileName: string; // String!
-    fileType: NexusGenEnums['FileType']; // FileType!
     id: number; // Int!
+    mime: string; // String!
     originalSize: number; // Int!
     referencePath: string | null; // String
     storage: NexusGenEnums['Storage']; // Storage!
     targetId: number | null; // Int
     targetType: string | null; // String
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    user: NexusGenRootTypes['User']; // User!
+    user: NexusGenRootTypes['User'] | null; // User
   }
   Meeting: { // field return type
     classroom: NexusGenRootTypes['Classroom']; // Classroom!
@@ -581,6 +578,7 @@ export interface NexusGenFieldTypes {
     uuid: string; // String!
   }
   Mutation: { // field return type
+    changeProfile: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     register: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
   }
@@ -938,15 +936,13 @@ export interface NexusGenFieldTypeNames {
     token: 'String'
     updatedAt: 'DateTime'
   }
-  FileDocument: { // field return type name
+  FileData: { // field return type name
     compressedSize: 'Int'
     context: 'String'
     createdAt: 'DateTime'
-    extensions: 'String'
-    fileId: 'String'
     fileName: 'String'
-    fileType: 'FileType'
     id: 'Int'
+    mime: 'String'
     originalSize: 'Int'
     referencePath: 'String'
     storage: 'Storage'
@@ -973,6 +969,7 @@ export interface NexusGenFieldTypeNames {
     uuid: 'String'
   }
   Mutation: { // field return type name
+    changeProfile: 'User'
     login: 'AuthPayload'
     register: 'AuthPayload'
   }
@@ -1178,6 +1175,18 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    changeProfile: { // args
+      cityId?: number | null; // Int
+      classtypeId?: number | null; // Int
+      cover?: NexusGenScalars['Upload'] | null; // Upload
+      coverId?: string | null; // String
+      id: number; // Int!
+      identityNumber?: string | null; // String
+      isBimbelActive?: string | null; // String
+      name?: string | null; // String
+      password?: string | null; // String
+      provinceId?: number | null; // Int
+    }
     login: { // args
       password: string; // String!
       username: string; // String!

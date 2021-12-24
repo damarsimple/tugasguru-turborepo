@@ -37,20 +37,45 @@ export const Query = extendType({
             },
             async resolve(root, args, { prisma }) {
 
-                try {
+                for (const x of ["email", "username", "phone"]) {
                     const userValidation = await prisma.user.findFirst({
                         where: {
-                            email: args.email,
-                            username: args.username,
-                            phone: args.phone,
+                            [x]: args.username,
+                        }
+                    });
+                    if (userValidation) return {
+                        status: false,
+                        message: 'User already exists',
+                    };
+                }
+
+                try {
+
+
+                    const salt = await genSalt();
+
+                    const user = await prisma.user.create({
+                        data: {
+                            ...args,
+                            password: await hash(args.password, salt),
                         }
                     });
 
-                    if (userValidation) {
+                    if (user) {
+                        const token = await signJWT(user)
+                        const refreshToken = '';
                         return {
-                            status: false,
-                            message: 'User already exists',
+                            status: true,
+                            token,
+                            refreshToken,
                         }
+                    }
+
+                    return {
+                        status: false,
+                        message: 'unknow error',
+                        token: '',
+                        refreshToken: '',
                     }
 
                 } catch (error) {
@@ -60,35 +85,6 @@ export const Query = extendType({
                     }
                 }
 
-
-
-                const salt = await genSalt();
-
-                const user = await prisma.user.create({
-                    data: {
-                        ...args,
-                        password: await hash(args.password, salt),
-                    }
-                });
-
-
-                if (user) {
-                    const token = await signJWT(user)
-                    const refreshToken = '';
-                    return {
-                        status: true,
-                        token,
-                        refreshToken,
-                    }
-                }
-
-
-                return {
-                    status: false,
-                    message: 'unknow error',
-                    token: '',
-                    refreshToken: '',
-                }
             }
         })
         t.field({
@@ -98,16 +94,17 @@ export const Query = extendType({
                 username: nonNull(stringArg()),
                 password: nonNull(stringArg()),
             },
-            async resolve(root, args, { prisma }) {
-                const user = await prisma.user.findFirst({
-                    where: {
-                        OR: {
-                            username: args.username,
-                            email: args.username,
-                            phone: args.username,
+            async resolve(_, args, { prisma }) {
+                let user;
+
+                for (const x of ["email", "username", "phone"]) {
+                    user = await prisma.user.findFirst({
+                        where: {
+                            [x]: args.username,
                         }
-                    }
-                });
+                    });
+                    if (user) break;
+                }
 
                 if (!user) {
                     return {
