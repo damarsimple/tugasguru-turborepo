@@ -1,5 +1,5 @@
-export interface Test {
-    name: string;
-}
+import { NexusGenFieldTypeNames } from "./nexus-typegen";
 
-export const t = "123"
+// kinda hacky but its works
+export interface Model extends NexusGenFieldTypeNames { }
+

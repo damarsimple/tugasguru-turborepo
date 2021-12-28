@@ -3,7 +3,7 @@ import { join } from 'path'
 import * as ModelTypes from "./models"
 import * as MutationTypes from "./mutation"
 import * as QueryTypes from "./query"
-import { copyFile } from "fs";
+import { copyFile, readFileSync, writeFileSync } from "fs";
 
 const typegen = join(__dirname, '../', 'nexus-typegen.ts');
 
@@ -24,10 +24,17 @@ export const schema = makeSchema({
 
 // copy schema to global types packages
 
-const tsTypesPath = join(__dirname, '../../packages/ts-types', 'nexus-typegen.ts')
+const tsTypesPath = join(__dirname, '../../../packages/ts-types', 'nexus-typegen.ts')
 
-// File destination.txt will be created or overwritten by default.
-copyFile(typegen, tsTypesPath, (err) => {
-  if (err) throw err;
-  console.log('source.txt was copied to destination.txt');
-});
+const data = readFileSync(typegen, 'utf-8');
+
+const newValue = data
+  .replace(new RegExp(`import type { Context } from "./api/context"`), '')
+  .replace(new RegExp(`context: Context;`), '');
+
+
+
+writeFileSync(tsTypesPath, newValue, 'utf-8');
+
+
+console.log('typegen copied to global ts-types packages');

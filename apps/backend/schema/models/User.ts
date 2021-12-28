@@ -16,6 +16,7 @@ export const User = objectType({
         t.field(UserType.school)
         t.field(UserType.phone)
         t.field(UserType.address)
+        t.field(UserType.coverId)
         t.field(UserType.updatedAt)
         t.field(UserType.createdAt)
     }

@@ -1,10 +1,12 @@
-import { Button } from "ui";
+import { AppProvider, Button } from "ui";
+import { useAuthStore } from "ui/stores/auth";
+import { useUserStore } from "ui/stores/user";
 
 export default function Docs() {
+  const { user } = useUserStore();
   return (
-    <div>
-      <h1>Docs</h1>
-      <Button />
-    </div>
+    <AppProvider>
+      <Button>Hello {user.name}</Button>
+    </AppProvider>
   );
 }

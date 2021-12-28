@@ -66,7 +66,6 @@ export interface NexusGenScalars {
   Upload: any
 }
 
-
 export interface NexusGenObjects {
   Absent: { // root type
     content: string; // String!
@@ -351,6 +350,7 @@ export interface NexusGenObjects {
   User: { // root type
     address: string; // String!
     balance: number; // Float!
+    coverId?: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id: number; // Int!
@@ -749,6 +749,7 @@ export interface NexusGenFieldTypes {
     address: string; // String!
     balance: number; // Float!
     city: NexusGenRootTypes['City']; // City!
+    coverId: string | null; // String
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     id: number; // Int!
@@ -1140,6 +1141,7 @@ export interface NexusGenFieldTypeNames {
     address: 'String'
     balance: 'Float'
     city: 'City'
+    coverId: 'String'
     createdAt: 'DateTime'
     email: 'String'
     id: 'Int'
