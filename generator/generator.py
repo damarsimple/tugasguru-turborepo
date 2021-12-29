@@ -65,7 +65,7 @@ def createHostTemplate(subdomain):
 def createPM2Template(subdomain):
     return {
         "name": subdomain,
-        "script": "server.js" if subdomain is not "backend" else "src/main.ts",
+        "script": "server.js" if subdomain != "gql" else "src/main.ts",
         "cwd": f"apps/{subdomain}",
     }
 
@@ -88,11 +88,11 @@ app.prepare().then(() => {
     handle(req, res, parsedUrl);
   }).listen({port}, (err) => {
     if (err) throw err;
-    console.log("Ready on http://{subdomain}{domain}:{port});
+    console.log("Ready on http://{subdomain}{domain}:{port}");
   });
 });
 
-""".replace("{subdomain}", subdomain).replace("{domain}", domain).replace("{port}", port)
+""".replace("{subdomain}", subdomain).replace("{domain}", domain).replace("{port}", str(port))
 
 
 hosts = []
@@ -108,11 +108,12 @@ for i in ports:
     with open(f"sites-enabled/{subdomain}{domain}", mode="w+") as f:
         f.write(createNginxTemplate(subdomain))
 
-    if subdomain is not "backend":
+    if subdomain != "gql" or subdomain != domain:
         try:
-            with open(f"../apps/{subdomain}/server.js", mode="w+") as f:
-                f.write(createNextTemplate(subdomain))
+            with open(f"../apps/{subdomain.replace('.','')}/server.js", mode="w+") as f:
+                f.write(createNextTemplate(subdomain, i))
         except Exception as e:
+            print(e)
             continue
 
 
