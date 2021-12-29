@@ -1,0 +1,7 @@
+[
+  {
+    "name": "account",
+    "script": "server.js",
+    "cwd": "apps/account"
+  }
+]

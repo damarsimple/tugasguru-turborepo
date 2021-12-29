@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
     "start": "NO_PEER_DEPENDENCY_CHECK='true' PEER_DEPENDENCY_CHECK='false' ts-node --transpile-only src/main.ts",
     "seed": "prisma migrate reset -f && NO_PEER_DEPENDENCY_CHECK='true' PEER_DEPENDENCY_CHECK='false' ts-node-dev --transpile-only prisma/seed.ts",
     "queue": "NO_PEER_DEPENDENCY_CHECK='true' PEER_DEPENDENCY_CHECK='false' ts-node-dev --transpile-only queue/fileprocessor.ts",
