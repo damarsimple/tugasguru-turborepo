@@ -1,5 +1,5 @@
-import { NexusGenFieldTypeNames } from "./nexus-typegen";
+import { NexusGenObjects } from "./nexus-typegen";
 
 // kinda hacky but its works
-export interface Model extends NexusGenFieldTypeNames { }
+export interface Model extends NexusGenObjects { }
 

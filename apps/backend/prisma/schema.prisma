@@ -740,22 +740,24 @@ model Meeting {
   finishAt DateTime?
 
   name        String
-  classroomId Int
-  classroom   Classroom @relation(fields: [classroomId], references: [id])
+  classroomId Int?
+  classroom   Classroom? @relation(fields: [classroomId], references: [id])
 
   documents  String[]
   filesTypes String[]
 
-  contentType MeetingContentType
+  contentType MeetingContentType?
   contentId   String?
   contentText String?
 
-  agendaId Int
-  agenda   Agenda @relation(fields: [agendaId], references: [id])
+  // agendaId Int
+  // agenda   Agenda @relation(fields: [agendaId], references: [id])
 
 
   room Room[]
 
+  Agenda   Agenda? @relation(fields: [agendaId], references: [id])
+  agendaId Int?
 }
 
 model Report {

@@ -1,5 +1,5 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus"
-import { Roles } from "../models"
+import { Roles, User } from "../models"
 import { compare, hash, genSalt } from "bcrypt";
 import { signJWT } from "../../api/jwt";
 
@@ -10,6 +10,7 @@ export const AuthPayload = objectType({
         t.nullable.string('message');
         t.string('token');
         t.nullable.string('refreshToken');
+        t.nullable.field('user', { type: User });
     },
 })
 
@@ -68,6 +69,7 @@ export const Query = extendType({
                             status: true,
                             token,
                             refreshToken,
+                            user
                         }
                     }
 
@@ -122,6 +124,7 @@ export const Query = extendType({
                         status: true,
                         token,
                         refreshToken,
+                        user
                     }
                 }
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 function getWindowDimensions() {
+  //@ts-ignore
   if (!process.browser) {
     return { height: 0, width: 0 };
   }
@@ -21,6 +22,7 @@ export default function useWindowDimensions() {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
     }
+    //@ts-ignore
     if (!process.browser) return;
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

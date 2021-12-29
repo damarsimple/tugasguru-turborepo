@@ -31,13 +31,13 @@ const uploadLink = createUploadLink({
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const { token } = useAuthStore.getState();
+    const { token } = useAuthStore();
     // return the headers to the context so httpLink can read them
 
     return {
         headers: {
             ...headers,
-            authorization: token ? `Bearer ${token}` : "",
+            authorization: token ? token : "",
         },
     };
 });
@@ -130,11 +130,13 @@ const theme = createTheme({
 export function AppProvider({ children }: WithChildren) {
 
     const { user, setUser } = useUserStore();
+    const { token } = useAuthStore();
     const [ready, setReady] = useState(false);
     useEffect(() => {
 
-        client.query<{ me: Model["User"] }>({
-            query: gql`
+        if (token) {
+            client.query<{ me: Model["User"] }>({
+                query: gql`
        query Query {
   me {
     id
@@ -149,20 +151,23 @@ export function AppProvider({ children }: WithChildren) {
     createdAt
   }
 }`
-        }).then(({ data: { me } }) => {
-            setUser(me)
-            setReady(true);
-        }).catch(() => { setUser(null); setReady(true); })
+            }).then(({ data: { me } }) => {
+                setUser(me)
+                setReady(true);
+            }).catch(() => { setUser(null); setReady(true); })
+        } else {
+            setReady(true)
+        }
 
-    }, [])
+    }, [token])
 
     return (
         <ApolloProvider client={client}>
             <BaseThemeProvider theme={theme}>
-                test
-                {/* {ready && children} */}
+                {ready && children}
             </BaseThemeProvider>
             <ToastContainer position="bottom-right" />
         </ApolloProvider>
     )
 }
+

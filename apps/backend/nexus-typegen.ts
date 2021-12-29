@@ -112,6 +112,7 @@ export interface NexusGenObjects {
     refreshToken?: string | null; // String
     status?: boolean | null; // Boolean
     token?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
   }
   Chat: { // root type
     content: string; // String!
@@ -208,7 +209,7 @@ export interface NexusGenObjects {
   Meeting: { // root type
     contentId?: string | null; // String
     contentText?: string | null; // String
-    contentType: NexusGenEnums['MeetingContentType']; // MeetingContentType!
+    contentType?: NexusGenEnums['MeetingContentType'] | null; // MeetingContentType
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     documents: string[]; // [String!]!
     filesTypes: string[]; // [String!]!
@@ -449,6 +450,7 @@ export interface NexusGenFieldTypes {
     refreshToken: string | null; // String
     status: boolean | null; // Boolean
     token: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
   }
   Chat: { // field return type
     content: string; // String!
@@ -562,10 +564,10 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
   }
   Meeting: { // field return type
-    classroom: NexusGenRootTypes['Classroom']; // Classroom!
+    classroom: NexusGenRootTypes['Classroom'] | null; // Classroom
     contentId: string | null; // String
     contentText: string | null; // String
-    contentType: NexusGenEnums['MeetingContentType']; // MeetingContentType!
+    contentType: NexusGenEnums['MeetingContentType'] | null; // MeetingContentType
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     documents: string[]; // [String!]!
     filesTypes: string[]; // [String!]!
@@ -580,6 +582,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     changeProfile: NexusGenRootTypes['User'] | null; // User
+    createMeeting: NexusGenRootTypes['Meeting'] | null; // Meeting
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     register: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
   }
@@ -841,6 +844,7 @@ export interface NexusGenFieldTypeNames {
     refreshToken: 'String'
     status: 'Boolean'
     token: 'String'
+    user: 'User'
   }
   Chat: { // field return type name
     content: 'String'
@@ -972,6 +976,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     changeProfile: 'User'
+    createMeeting: 'Meeting'
     login: 'AuthPayload'
     register: 'AuthPayload'
   }
@@ -1189,6 +1194,10 @@ export interface NexusGenArgTypes {
       name?: string | null; // String
       password?: string | null; // String
       provinceId?: number | null; // Int
+    }
+    createMeeting: { // args
+      classroomId?: number | null; // Int
+      name: string; // String!
     }
     login: { // args
       password: string; // String!

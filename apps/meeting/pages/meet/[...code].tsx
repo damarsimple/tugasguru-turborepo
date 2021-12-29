@@ -1,8 +1,9 @@
 import { Box, Typography, Button, AppBar, Avatar, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip } from '@mui/material';
 import { WithRouterProps } from 'next/dist/client/with-router'
 import { withRouter } from 'next/router'
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { useState, useEffect, useRef } from "react";
+import useWindowDimensions from "ui/hooks/useWindowDimensions"
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -44,6 +45,8 @@ function Code({ router }: WithRouterProps) {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const { width, height } = useWindowDimensions()
 
 
 
@@ -128,9 +131,14 @@ function Code({ router }: WithRouterProps) {
                 </Box>
             </Box>
         </Box> :
-            <Box>
-                {mediaStream && [...new Array(10)].map((_, i) => {
-                    return <video key={i} srcObject={mediaStream.getTracks()[0]} />
+            <Box >
+                {mediaStream && [...new Array(2)].map((_, i) => {
+                    return <VideoComponent key={i} mediaStream={mediaStream}
+                        style={{
+                            height,
+                            width
+                        }}
+                    />
                 })}
             </Box>
     )
@@ -139,6 +147,35 @@ function Code({ router }: WithRouterProps) {
 
 export default withRouter(Code)
 
+interface VideoBoxProps {
+    mediaStreams: MediaStream[]
+}
+
+export function VideoBox({ }: VideoBoxProps) {
+
+}
+
+interface VideoComponentProps {
+    mediaStream: MediaStream
+    style?: CSSProperties
+}
+
+export function VideoComponent({ mediaStream, style }: VideoComponentProps) {
+
+    // const videoRef = useRef<HTMLVideoElement>(null);
+
+    // useEffect(() => {
+    //     videoRef.current.srcObject = mediaStream;
+
+    // }, [])
+
+    return <video autoPlay ref={(video) => {
+        if (video && mediaStream) {
+            video.srcObject = mediaStream;
+            video.play()
+        }
+    }} style={style} playsInline controls />
+}
 
 export function useUserMedia(requestedMedia: MediaStreamConstraints) {
     const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);

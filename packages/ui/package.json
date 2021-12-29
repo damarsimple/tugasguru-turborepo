@@ -5,12 +5,13 @@
   "types": "./index.tsx",
   "license": "MIT",
   "devDependencies": {
+    "@types/apollo-upload-client": "^14.1.0",
+    "@types/js-cookie": "^3.0.1",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "ts-types": "*",
     "tsconfig": "*",
-    "typescript": "^4.5.3",
-    "@types/apollo-upload-client": "^14.1.0"
+    "typescript": "^4.5.3"
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
@@ -23,6 +24,7 @@
     "@tanem/react-nprogress": "^4.0.1",
     "apollo-upload-client": "^17.0.0",
     "graphql": "^16.2.0",
+    "js-cookie": "^3.0.1",
     "react-toastify": "^8.1.0",
     "zustand": "^3.6.8"
   }
