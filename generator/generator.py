@@ -32,13 +32,13 @@ ports = {
 def format(subdomain): return subdomain + "." if subdomain != "." else ""
 
 
-def createNginxTemplate(subdomain):
+def createNginxTemplate(subdomain, port):
     return """
 server {
     listen 80;
     server_name {subdomain}{domain};
-    listen 443 ssl default_server;
-    listen [::]:443 ssl default_server;
+    listen 443 ssl;
+    listen [::]:443 ssl;
     ssl_certificate /etc/ssl/certs/{domain}.pem;
     ssl_certificate_key /etc/ssl/private/{domain}-key.pem;
 
@@ -52,10 +52,10 @@ server {
     location / {
         proxy_set_header   X-Forwarded-For $remote_addr;
         proxy_set_header   Host $http_host;
-        proxy_pass         http://127.0.0.1:3002;
+        proxy_pass         http://127.0.0.1:{port};
     }
 }
-""".replace("{subdomain}", subdomain).replace("{domain}", domain)
+""".replace("{subdomain}", subdomain).replace("{domain}", domain).replace("{port}", str(port))
 
 
 def createHostTemplate(subdomain):
@@ -63,6 +63,7 @@ def createHostTemplate(subdomain):
 
 
 def createPM2Template(subdomain):
+    subdomain = subdomain.replace('.', '')
     return {
         "name": subdomain,
         "script": "server.js" if subdomain != "gql" else "src/main.ts",
@@ -106,7 +107,7 @@ for i in ports:
     pm2Data.append(createPM2Template(subdomain))
 
     with open(f"sites-enabled/{subdomain}{domain}", mode="w+") as f:
-        f.write(createNginxTemplate(subdomain))
+        f.write(createNginxTemplate(subdomain, i))
 
     if subdomain != "gql" or subdomain != domain:
         try:
@@ -120,8 +121,9 @@ for i in ports:
 with open(f"hosts", mode="w+") as f:
     f.write("\n".join(hosts))
 
-with open("../ecosystem.config.js", mode="w+") as f:
+with open("../apps-declaration.json", mode="w+") as f:
     f.write(json.dumps(pm2Data))
+
 
 if os.name == "posix":
     shutil.copyfile("hosts", "/etc/hosts")

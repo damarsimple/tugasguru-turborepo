@@ -2,8 +2,8 @@
 server {
     listen 80;
     server_name meet.tugasguru.com;
-    listen 443 ssl default_server;
-    listen [::]:443 ssl default_server;
+    listen 443 ssl;
+    listen [::]:443 ssl;
     ssl_certificate /etc/ssl/certs/tugasguru.com.pem;
     ssl_certificate_key /etc/ssl/private/tugasguru.com-key.pem;
 

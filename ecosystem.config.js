@@ -1,1 +1,7 @@
-[{"name": "", "script": "server.js", "cwd": "apps/"}, {"name": "gql.", "script": "server.js", "cwd": "apps/gql."}, {"name": "account.", "script": "server.js", "cwd": "apps/account."}, {"name": "meet.", "script": "server.js", "cwd": "apps/meet."}, {"name": "student.", "script": "server.js", "cwd": "apps/student."}, {"name": "parent.", "script": "server.js", "cwd": "apps/parent."}, {"name": "admin.", "script": "server.js", "cwd": "apps/admin."}, {"name": "quiz.", "script": "server.js", "cwd": "apps/quiz."}]
+const fs = require("fs");
+
+const data = JSON.parse(fs.readFileSync("apps-declaration.json", "utf8"));
+
+module.exports = {
+  apps: data,
+};
