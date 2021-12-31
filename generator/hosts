@@ -1,8 +1,8 @@
-127.0.0.1 tugasguru.com
-127.0.0.1 gql.tugasguru.com
-127.0.0.1 account.tugasguru.com
-127.0.0.1 meet.tugasguru.com
-127.0.0.1 student.tugasguru.com
-127.0.0.1 parent.tugasguru.com
-127.0.0.1 admin.tugasguru.com
-127.0.0.1 quiz.tugasguru.com
+127.0.0.1 landing.localhost
+127.0.0.1 backend.localhost
+127.0.0.1 account.localhost
+127.0.0.1 meet.localhost
+127.0.0.1 student.localhost
+127.0.0.1 parent.localhost
+127.0.0.1 admin.localhost
+127.0.0.1 quiz.localhost

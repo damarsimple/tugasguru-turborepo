@@ -2,13 +2,22 @@ import sys
 import os
 import shutil
 import json
-dev = len(sys.argv) > 1 and sys.argv[1] == "dev"
+import glob
+
+files = glob.glob('sites-enabled/*')
+
+for f in files:
+    os.remove(f)
+
+dev = "--dev" in sys.argv
+
+
 domain = "localhost" if dev else "tugasguru.com"
 
 ports = {
-    3000: ".",
+    3000: "landing",
 
-    4000: "gql",
+    4000: "backend",
 
     3001: "account",
     3002: "meet",
@@ -66,7 +75,7 @@ def createPM2Template(subdomain):
     subdomain = subdomain.replace('.', '')
     return {
         "name": subdomain,
-        "script": "server.js" if subdomain != "gql" else "src/main.ts",
+        "script": "server.js" if subdomain != "backend" else "src/main.ts",
         "cwd": f"apps/{subdomain}",
     }
 
@@ -104,12 +113,13 @@ for i in ports:
     subdomain = format(ports[i])
 
     hosts.append(createHostTemplate(subdomain))
-    pm2Data.append(createPM2Template(subdomain))
+    if subdomain != "backend":
+        pm2Data.append(createPM2Template(subdomain))
 
     with open(f"sites-enabled/{subdomain}{domain}", mode="w+") as f:
         f.write(createNginxTemplate(subdomain, i))
 
-    if subdomain != "gql" or subdomain != domain:
+    if subdomain != "backend" or subdomain != domain:
         try:
             with open(f"../apps/{subdomain.replace('.','')}/server.js", mode="w+") as f:
                 f.write(createNextTemplate(subdomain, i))
