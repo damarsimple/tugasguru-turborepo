@@ -2,14 +2,13 @@ import { useMutation, gql } from "@apollo/client";
 import { Typography, Grid, CssBaseline, Paper, Box, Avatar, TextField, FormControlLabel, Checkbox, Button } from "@mui/material";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { Model } from "ts-types";
-import { useAuthStore } from "ui/stores/auth";
-import { useUserStore } from "ui/stores/user";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Copyright } from "../components/Copyright";
+import { Copyright } from "@mui/icons-material";
+import { useAuthStore } from "../stores/auth";
+import { useUserStore } from "../stores/user";
+import { Model } from "../ts-types";
 
-
-export function LoginPage() {
+export default function LoginPage() {
     const { setToken } = useAuthStore();
     const { setUser } = useUserStore();
     const [handle, { loading }] = useMutation<{ login: Model["AuthPayload"] }>(gql`

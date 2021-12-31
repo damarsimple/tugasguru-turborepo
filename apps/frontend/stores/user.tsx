@@ -1,6 +1,6 @@
 import create from "zustand";
-import { Model } from "ts-types";
 import { persist } from "zustand/middleware";
+import { Model } from "../ts-types";
 
 type User = Model["User"]
 

@@ -1,7 +1,6 @@
-import { useUserStore } from "ui/stores/user";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import Navbar from "../components/Navbar";
+import { useUserStore } from "../stores/user";
 
 export default function Account(): JSX.Element {
   const { push } = useRouter()
@@ -17,7 +16,6 @@ export default function Account(): JSX.Element {
 
   return <>
 
-    <Navbar />
 
   </>
 }

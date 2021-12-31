@@ -1,5 +1,4 @@
 import { createTheme, ThemeProvider as BaseThemeProvider } from '@mui/material/styles';
-import { WithChildren } from "./types";
 
 import {
     ApolloClient,
@@ -8,18 +7,18 @@ import {
     ApolloLink,
     gql,
 } from "@apollo/client";
-
+``
 import create from "zustand";
 import { onError } from "@apollo/client/link/error";
 import moment from "moment-timezone";
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
-import { useAuthStore } from "./stores/auth";
 import { toast as toastObj, ToastContainer } from "react-toastify";
 import { useNProgress } from "@tanem/react-nprogress";
-import { useUserStore } from "./stores/user";
 import { useEffect, useState } from "react";
-import { Model } from "ts-types";
+import { useUserStore } from '../stores/user';
+import { useAuthStore } from '../stores/auth';
+import { Model, WithChildren } from '../ts-types';
 
 moment.tz.setDefault("Asia/Jakarta");
 
@@ -159,6 +158,7 @@ export function AppProvider({ children }: WithChildren) {
             setReady(true)
         }
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token])
 
     return (
@@ -172,6 +172,4 @@ export function AppProvider({ children }: WithChildren) {
 }
 
 
-export * from "./endpoints"
-export * from "./assets"
 

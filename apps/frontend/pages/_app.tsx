@@ -1,9 +1,9 @@
-import { AppProvider } from "ui";
+import { AppProvider } from "../components/Provider";
 
 export default function Docs({ Component, pageProps }) {
 
     return (
-        <AppProvider >
+        <AppProvider>
             <Component {...pageProps} />
         </AppProvider>
     );
