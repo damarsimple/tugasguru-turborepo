@@ -48,3 +48,11 @@ export const httpClient = axios.create({
             authorization: token ? token : "",
         },
 })
+
+
+import io from "socket.io-client"
+
+export const socketIo = io("http://localhost:4000", {
+  query: {token}
+})
+

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
+    "@sitespeed.io/throttle": "^3.1.0",
     "@types/graphql-iso-date": "^3.4.0",
     "@vercel/ncc": "^0.33.1",
     "apollo-server": "^3.5.0",
@@ -37,6 +38,7 @@
     "pino": "^7.5.1",
     "pino-pretty": "^7.3.0",
     "prisma": "^3.7.0",
+    "socket.io": "^4.4.0",
     "socket.io-server": "^1.0.0-b",
     "uuid": "^8.3.2",
     "uuidjs": "^4.2.9"
