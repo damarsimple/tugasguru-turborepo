@@ -1,6 +1,7 @@
-import { AppProvider } from "../components/Provider";
+import AppProvider from "../components/Provider";
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function Docs({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
 
     return (
         <AppProvider>

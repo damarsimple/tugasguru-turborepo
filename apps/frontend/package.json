@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "private": true,
+  "version": "0.0.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -19,9 +20,12 @@
     "js-cookie": "^3.0.1",
     "moment-timezone": "^0.5.34",
     "next": "12.0.7",
+    "nextjs-progressbar": "^0.0.13",
     "prettier": "^2.5.1",
     "react": "17.0.2",
+    "react-device-detect": "^2.1.2",
     "react-dom": "17.0.2",
+    "react-icons": "^4.3.1",
     "react-toastify": "^8.1.0",
     "zustand": "^3.6.8"
   },
@@ -30,6 +34,8 @@
     "@types/js-cookie": "^3.0.1",
     "@types/react": "^17.0.38",
     "eslint": "8.5.0",
-    "eslint-config-next": "12.0.7"
+    "eslint-config-next": "12.0.7",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.4"
   }
 }

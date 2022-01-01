@@ -488,6 +488,7 @@ type User {
   name: String!
   phone: String!
   province: Province!
+  roles: Roles!
   school: School
   updatedAt: DateTime!
   username: String!

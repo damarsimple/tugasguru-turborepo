@@ -14,11 +14,12 @@ import moment from "moment-timezone";
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import { toast as toastObj, ToastContainer } from "react-toastify";
-import { useNProgress } from "@tanem/react-nprogress";
 import { useEffect, useState } from "react";
 import { useUserStore } from '../stores/user';
 import { useAuthStore } from '../stores/auth';
-import { Model, WithChildren } from '../ts-types';
+import { Model } from 'ts-types';
+import { WithChildren } from '../types';
+import NextNProgress from 'nextjs-progressbar';
 
 moment.tz.setDefault("Asia/Jakarta");
 
@@ -71,62 +72,12 @@ export const useProgressStore = create<{
     setIsAnimating: (isAnimating: boolean) => set(() => ({ isAnimating })),
 }));
 
-export const Bar = ({
-    animationDuration,
-    progress,
-}: {
-    animationDuration: number;
-    progress: number;
-}) => (
-    <div
-        className="bg-indigo-600 h-1 w-full left-0 top-0 fixed z-50"
-        style={{
-            marginLeft: `${(-1 + progress) * 100}%`,
-            transition: `margin-left ${animationDuration}ms linear`,
-        }}
-    ></div>
-);
-
-
-export const Progress = ({ isAnimating }: { isAnimating: boolean }) => {
-    const { animationDuration, isFinished, progress } = useNProgress({
-        isAnimating,
-    });
-
-    return (
-        <Container animationDuration={animationDuration} isFinished={isFinished}>
-            <Bar animationDuration={animationDuration} progress={progress} />
-        </Container>
-    );
-};
-
-
-export const Container = ({
-    animationDuration,
-    children,
-    isFinished,
-}: {
-    animationDuration: number;
-    isFinished: boolean;
-    children: JSX.Element;
-}) => (
-    <div
-        className="pointer-events-none"
-        style={{
-            opacity: isFinished ? 0 : 1,
-            transition: `opacity ${animationDuration}ms linear`,
-        }}
-    >
-        {children}
-    </div>
-);
-
 
 const theme = createTheme({
 
 });
 
-export function AppProvider({ children }: WithChildren) {
+export default function AppProvider({ children }: WithChildren) {
 
     const { user, setUser } = useUserStore();
     const { token } = useAuthStore();
@@ -136,20 +87,21 @@ export function AppProvider({ children }: WithChildren) {
         if (token) {
             client.query<{ me: Model["User"] }>({
                 query: gql`
-       query Query {
-  me {
-    id
-    email
-    name
-    username
-    balance
-    phone
-    address
-    coverId
-    updatedAt
-    createdAt
-  }
-}`
+                    query GetUserInfo {
+                        me {
+                            id
+                            email
+                            name
+                            username
+                            balance
+                            phone
+                            address
+                            coverId
+                            updatedAt
+                            createdAt
+                            roles
+                        }
+                    }`
             }).then(({ data: { me } }) => {
                 setUser(me)
                 setReady(true);
@@ -164,6 +116,7 @@ export function AppProvider({ children }: WithChildren) {
     return (
         <ApolloProvider client={client}>
             <BaseThemeProvider theme={theme}>
+                <NextNProgress />
                 {ready && children}
             </BaseThemeProvider>
             <ToastContainer position="bottom-right" />

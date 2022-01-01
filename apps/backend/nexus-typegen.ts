@@ -357,6 +357,7 @@ export interface NexusGenObjects {
     id: number; // Int!
     name: string; // String!
     phone: string; // String!
+    roles: NexusGenEnums['Roles']; // Roles!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
@@ -759,6 +760,7 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     phone: string; // String!
     province: NexusGenRootTypes['Province']; // Province!
+    roles: NexusGenEnums['Roles']; // Roles!
     school: NexusGenRootTypes['School'] | null; // School
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
@@ -1153,6 +1155,7 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     phone: 'String'
     province: 'Province'
+    roles: 'Roles'
     school: 'School'
     updatedAt: 'DateTime'
     username: 'String'

@@ -9,7 +9,17 @@ class MyDocument extends Document {
     render() {
         return (
             <Html>
-                <Head />
+                <Head >
+                    <link
+                        rel="stylesheet"
+                        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                    />
+                    <link
+                        rel="stylesheet"
+                        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                    />
+                </Head>
+
                 <body style={{ padding: 0, margin: 0 }}>
                     <Main />
                     <NextScript />
