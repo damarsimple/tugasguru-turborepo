@@ -586,6 +586,7 @@ export interface NexusGenFieldTypes {
     createMeeting: NexusGenRootTypes['Meeting'] | null; // Meeting
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     register: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    registerValidation: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
   }
   Notification: { // field return type
     context: string; // String!
@@ -627,7 +628,10 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
+    cities: Array<NexusGenRootTypes['City'] | null> | null; // [City]
     me: NexusGenRootTypes['User'] | null; // User
+    provinces: Array<NexusGenRootTypes['Province'] | null> | null; // [Province]
+    schools: Array<NexusGenRootTypes['School'] | null> | null; // [School]
   }
   Question: { // field return type
     answers: string[]; // [String!]!
@@ -981,6 +985,7 @@ export interface NexusGenFieldTypeNames {
     createMeeting: 'Meeting'
     login: 'AuthPayload'
     register: 'AuthPayload'
+    registerValidation: 'AuthPayload'
   }
   Notification: { // field return type name
     context: 'String'
@@ -1022,7 +1027,10 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Query: { // field return type name
+    cities: 'City'
     me: 'User'
+    provinces: 'Province'
+    schools: 'School'
   }
   Question: { // field return type name
     answers: 'String'
@@ -1211,6 +1219,7 @@ export interface NexusGenArgTypes {
       cityId: number; // Int!
       classtypeId?: number | null; // Int
       email: string; // String!
+      identityFile?: NexusGenScalars['Upload'] | null; // Upload
       identityNumber?: string | null; // String
       name: string; // String!
       nisn?: string | null; // String
@@ -1220,6 +1229,22 @@ export interface NexusGenArgTypes {
       roles: NexusGenEnums['Roles']; // Roles!
       schoolId?: number | null; // Int
       username: string; // String!
+    }
+    registerValidation: { // args
+      cityId: number; // Int!
+      email: string; // String!
+      phone: string; // String!
+      provinceId: number; // Int!
+      username: string; // String!
+    }
+  }
+  Query: {
+    cities: { // args
+      provinceId?: number | null; // Int
+    }
+    schools: { // args
+      cityId?: number | null; // Int
+      provinceId?: number | null; // Int
     }
   }
 }

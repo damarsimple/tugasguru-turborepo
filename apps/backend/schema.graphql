@@ -253,7 +253,8 @@ type Mutation {
   changeProfile(cityId: Int, classtypeId: Int, cover: Upload, coverId: String, id: Int!, identityNumber: String, isBimbelActive: String, name: String, password: String, provinceId: Int): User
   createMeeting(classroomId: Int, name: String!): Meeting
   login(password: String!, username: String!): AuthPayload
-  register(address: String!, cityId: Int!, classtypeId: Int, email: String!, identityNumber: String, name: String!, nisn: String, password: String!, phone: String!, provinceId: Int!, roles: Roles!, schoolId: Int, username: String!): AuthPayload
+  register(address: String!, cityId: Int!, classtypeId: Int, email: String!, identityFile: Upload, identityNumber: String, name: String!, nisn: String, password: String!, phone: String!, provinceId: Int!, roles: Roles!, schoolId: Int, username: String!): AuthPayload
+  registerValidation(cityId: Int!, email: String!, phone: String!, provinceId: Int!, username: String!): AuthPayload
 }
 
 type Notification {
@@ -310,7 +311,10 @@ type Province {
 }
 
 type Query {
+  cities(provinceId: Int): [City]
   me: User
+  provinces: [Province]
+  schools(cityId: Int, provinceId: Int): [School]
 }
 
 type Question {

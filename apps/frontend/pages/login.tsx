@@ -1,4 +1,4 @@
-import {useMutation, gql} from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import {
   Typography,
   Grid,
@@ -12,19 +12,19 @@ import {
   Button,
 } from '@mui/material'
 import Link from 'next/link'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import {Copyright} from '@mui/icons-material'
-import {useAuthStore} from '../stores/auth'
-import {useUserStore} from '../stores/user'
-import {useRouter} from 'next/router'
-import {useEffect} from 'react'
-import {Model} from 'ts-types'
+import { Copyright } from '@mui/icons-material'
+import { useAuthStore } from '../stores/auth'
+import { useUserStore } from '../stores/user'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { Model } from 'ts-types'
 
 export default function LoginPage() {
-  const {setToken} = useAuthStore()
-  const {user, setUser} = useUserStore()
-  const {push} = useRouter()
+  const { setToken } = useAuthStore()
+  const { user, setUser } = useUserStore()
+  const { push } = useRouter()
 
   useEffect(() => {
     if (user) {
@@ -33,7 +33,7 @@ export default function LoginPage() {
     }
   }, [user])
 
-  const [handle, {loading}] = useMutation<{login: Model['AuthPayload']}>(gql`
+  const [handle, { loading }] = useMutation<{ login: Model['AuthPayload'] }>(gql`
     mutation Login($username: String!, $password: String!) {
       login(username: $username, password: $password) {
         status
@@ -64,11 +64,11 @@ export default function LoginPage() {
         username: data.get('username'),
         password: data.get('password'),
       },
-    }).then(({data: {login}}) => {
+    }).then(({ data: { login } }) => {
       if (login.status) {
         setToken(login.token)
         setUser(login.user)
-        push('/')
+        push(user.roles.toLowerCase())
       } else {
         toast.error(login.message)
       }
@@ -76,7 +76,7 @@ export default function LoginPage() {
   }
 
   return (
-    <Grid container component="main" sx={{height: '100vh'}}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
       <Grid
         item
@@ -101,13 +101,13 @@ export default function LoginPage() {
             flexDirection: 'column',
             alignItems: 'center',
           }}>
-          <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -136,7 +136,7 @@ export default function LoginPage() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{mt: 3, mb: 2}}
+              sx={{ mt: 3, mb: 2 }}
               disabled={loading}>
               masuk
             </Button>
@@ -148,7 +148,7 @@ export default function LoginPage() {
                 <Link href="/register">{'Belum memiliki akun ? Daftar'}</Link>
               </Grid>
             </Grid>
-            <Copyright sx={{mt: 5}} /> TUGAS GURU
+            <Copyright sx={{ mt: 5 }} /> TUGAS GURU
           </Box>
         </Box>
       </Grid>
