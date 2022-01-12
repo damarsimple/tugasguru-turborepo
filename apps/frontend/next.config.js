@@ -4,7 +4,10 @@
  * @type {import('next').NextConfig}
  **/
 
-module.exports = {
+
+const withTM = require("next-transpile-modules")(["ui"]);
+
+module.exports = withTM( {
   reactStrictMode: true,
   webpack: {
     module: {
@@ -17,4 +20,6 @@ module.exports = {
       ],
     },
   },
-}
+})
+
+

@@ -3,7 +3,7 @@ import { WithRouterProps } from 'next/dist/client/with-router'
 import { withRouter } from 'next/router'
 import React, { CSSProperties } from 'react'
 import { useState, useEffect, useRef } from "react";
-import useWindowDimensions from "ui/hooks/useWindowDimensions"
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
